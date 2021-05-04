@@ -20,6 +20,7 @@ public class HashtableAdaptee implements HHashtable {
     public HashtableAdaptee(int initialCapacity) {
         hash = new Hashtable(initialCapacity);
     }
+
     @Override
     public int size() {
         return hash.size();
@@ -27,7 +28,7 @@ public class HashtableAdaptee implements HHashtable {
 
     @Override
     public boolean isEmpty() {
-        return hash.isEmpty();
+         return hash.isEmpty();
     }
 
     @Override
@@ -69,22 +70,20 @@ public class HashtableAdaptee implements HHashtable {
      *  Rehashes the contents of the hashtable into a hashtable with a larger capacity. This method is calledautomatically when the number
      *  of keys in the hashtable exceeds this hashtable’s capacity and load factor.
      */
-    protected void rehash(){
-
-    }
+    protected void rehash(){}
 
     @Override
     public Object put(Object key, Object value) {
-        return null;
+        return hash.put(key, value);
     }
 
     @Override
     public Object remove(Object key) {
-        return null;
+        return hash.remove(key);
     }
 
     @Override
     public void clear() {
-
+        hash.clear();
     }
 }
