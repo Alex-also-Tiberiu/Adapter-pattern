@@ -52,12 +52,6 @@ public interface HHashtable {
    Object get (Object key);
 
     /***
-     *  Rehashes the contents of the hashtable into a hashtable with a larger capacity. This method is calledautomatically when the number
-     *  of keys in the hashtable exceeds this hashtable’s capacity and load factor.
-     */
-   void rehash();
-
-    /***
      * Maps the specifiedkey to the specifiedvalue in this hashtable. Neither the key nor the value can benull.
      * @param key - the hashtable key
      * @param value - the value
