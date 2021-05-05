@@ -1,41 +1,98 @@
 package myAdapter;
 
-import java.util.Collection;
+import java.util.NoSuchElementException;
 
-public class ListAdapter implements HList{
+public class ListAdapter implements HList {
+    private VectorAdaptee v;
+
+    public ListAdapter() {
+        v = new VectorAdaptee();
+    }
+
+    public ListAdapter(int rows) {
+        v = new VectorAdaptee(rows);
+    }
+
     @Override
     public void add(int index, Object element) {
-
+        v.insertElementAt(element,index);
     }
 
     @Override
     public boolean add(Object o) {
-        return false;
+        if(o.equals(null))
+            return false;
+        else {
+            v.addElement(o);
+            return true;
+        }
     }
 
     @Override
-    public boolean addAll(int index) {
-        return false;
+    public boolean addAll(HCollection c) {
+        ListAdapter list = (ListAdapter) c;
+        /*
+        devo usare un iteratore per scandire la list e poi inserirla nel vector
+         */
+        ListIteratorr h = new ListIteratorr(list);
+        if(!h.hasNext())
+            return false;
+        else {
+            while (h.hasNext()) {
+                v.addElement(h.next());
+            }
+            return true;
+        }
     }
 
     @Override
-    public boolean addAll(int index, Collection c) {
-        return false;
+    public boolean addAll(int index, HCollection c) {
+        if(index < 0 || index > size())
+            throw new IndexOutOfBoundsException("select a different index to add the elements");
+        ListIteratorr h = new ListIteratorr((ListAdapter)c);
+        if(!h.hasNext())
+            return false;
+        else {
+            while(h.hasNext()) {
+                v.insertElementAt(h.next(),index++);
+            }
+            return true;
+        }
     }
 
     @Override
     public void clear() {
-
+        VectorAdaptee v2 = new VectorAdaptee();
+        v = v2;
     }
 
     @Override
     public boolean contains(Object o) {
+        if (o.equals(null))
+            throw new NullPointerException("the list does not support to contain null elements");
+        ListIteratorr h = iterator();
+        while(h.hasNext()) {
+            if (h.next().equals(o))
+                return true;
+            else
+                h.next();
+        }
         return false;
     }
 
     @Override
-    public boolean containsAll(Collection c) {
-        return false;
+    public boolean containsAll(HCollection c) {
+        if(c.equals(null))
+            throw new NullPointerException("null HCollection is not accepted");
+        ListIteratorr h = new ListIteratorr((ListAdapter) c);
+        int count = 0;
+        while(h.hasNext()) {
+            if(contains(h.next()))
+                count++;
+            else
+                break;
+        }
+        return count == ((ListAdapter)c).size();
     }
 
     @Override
@@ -54,8 +111,8 @@ public class ListAdapter implements HList{
     }
 
     @Override
-    public HIterator iterator() {
-        return null;
+    public ListIteratorr iterator() {
+        return new ListIteratorr();
     }
 
     @Override
@@ -64,12 +121,12 @@ public class ListAdapter implements HList{
     }
 
     @Override
-    public HListIterator listIterator() {
+    public ListIteratorr listIterator() {
         return null;
     }
 
     @Override
-    public HListIterator listIterator(int index) {
+    public ListIteratorr listIterator(int index) {
         return null;
     }
 
@@ -84,12 +141,12 @@ public class ListAdapter implements HList{
     }
 
     @Override
-    public boolean removeAll(Collection c) {
+    public boolean removeAll(HCollection c) {
         return false;
     }
 
     @Override
-    public boolean retainAll(Collection c) {
+    public boolean retainAll(HCollection c) {
         return false;
     }
 
@@ -104,7 +161,7 @@ public class ListAdapter implements HList{
     }
 
     @Override
-    public HList sublist(int fromIndex, int toIndex) {
+    public ListAdapter sublist(int fromIndex, int toIndex) {
         return null;
     }
 
@@ -116,5 +173,140 @@ public class ListAdapter implements HList{
     @Override
     public Object[] toArray(Object[] a) {
         return new Object[0];
+    }
+
+
+    /***
+     * Private Class that implements HListIterator
+     */
+    private class ListIteratorr implements HListIterator {
+        private int place;
+        private VectorAdaptee w;
+        private boolean next;
+        private boolean prev;
+
+        private ListIteratorr() {
+            place = 0;
+            next = false;
+            prev = false;
+            w = v;
+        }
+
+        private ListIteratorr( ListAdapter l) {
+            place = 0;
+            next = false;
+            prev = false;
+            w = l.v;
+        }
+
+        /*
+        deve aggiungere correttamente nella posizione dove punta l'iteratore
+         */
+        @Override
+        public void add(Object o) {
+            if(o.equals(null))
+                throw new NullPointerException("Null value is not accepted");
+            w.insertElementAt(o, place);
+            place++;
+        }
+
+        /*
+        deve dirmi correttamente se ha un elemento successivo
+         */
+        @Override
+        public boolean hasNext() {
+            if(place < w.size()) {
+                return true;
+            }
+            else
+                return false;
+        }
+
+        /*
+        deve dirmi correttamente se ha un elemento precedente
+         */
+        @Override
+        public boolean hasPrevious() {
+            if(place > 0) {
+                return true;
+            }
+            else
+                return false;
+        }
+
+        /*
+           deve restituirmi l'elemento successivo
+         */
+        @Override
+        public Object next() {
+            if (hasNext()) {
+                next = true;
+                prev = false;
+                return w.elementAt(place++);
+            }
+            else
+                throw new NoSuchElementException("Iterator come to the end");
+        }
+
+        /*
+        deve restituirmi l'indice successivo
+         */
+        @Override
+        public int nextIndex() {
+            return place;
+        }
+
+        /*
+        deve restituirmi l'elemento precedente
+         */
+        @Override
+        public Object previous() {
+            if (hasPrevious()) {
+                next = false;
+                prev = true;
+                return w.elementAt(--place);
+            }
+            else
+                throw  new NoSuchElementException("Iterator come to the beginning");
+        }
+
+        /*
+        deve restituirmi l'indice precedente a quello che punta l'iteratore
+         */
+        @Override
+        public int previousIndex() {
+            return place - 1;
+        }
+
+        /*
+        deve eliminare l'ultimo elemento chiamato da next o prev
+         */
+        @Override
+        public void remove() {
+            if(place > 0 && place < size()) {
+                if(next) {
+                    v.removeElementAt(--place);
+                }
+                else if(prev) {
+                    v.removeElementAt(place);
+                }
+            }
+            else
+                throw new IllegalArgumentException("Iterator didn't call next or previous");
+        }
+
+        /*
+        deve sostituire l'ultimo elemento chiamato da next o da prev
+         */
+        @Override
+        public void set(Object o) {
+            if(place >= 0 && place < w.size()) {
+                if (next)
+                    v.setElementAt(o, place - 1);
+                else if (prev)
+                    v.setElementAt(o, place);
+            }
+        }
+
     }
 }

@@ -1,5 +1,4 @@
 package myAdapter;
-import java.util.Collection;
 
 /**
  * The interface H list.
@@ -18,7 +17,9 @@ public interface HList {
     void add(int index, Object element);
 
     /***
-     * Appends the specified element to the end of this list
+     * return false if the Object introduced is null.
+     * Appends the specified element to the end of this list.
+     *
      * @param o the o
      * @return boolean
      */
@@ -28,10 +29,10 @@ public interface HList {
      * appends all of the elements in the specified collection to the end
      * of this list, in the order that they are returned by the specified
      * collection's iterator
-     * @param index the index
+     * @param c - collection whose elements are to be added to this list.
      * @return boolean
      */
-    boolean addAll(int index);
+    boolean addAll(HCollection c);
 
     /***
      * Inserts all of the elements in the specified collection into this list at the specified position
@@ -39,7 +40,7 @@ public interface HList {
      * @param c the c
      * @return boolean
      */
-    boolean addAll(int index, Collection c);
+    boolean addAll(int index, HCollection c);
 
     /***
      * Removes all of the elements from this list
@@ -58,7 +59,7 @@ public interface HList {
      * @param c the c
      * @return Returns true if this list contains all of the elements of the specified collection
      */
-    boolean containsAll(Collection c);
+    boolean containsAll(HCollection c);
 
     /***
      * Compares the specified object with this list for equality
@@ -138,7 +139,7 @@ public interface HList {
      * @param c the c
      * @return boolean
      */
-    boolean removeAll(Collection c);
+    boolean removeAll(HCollection c);
 
     /***
      * Retains only the elements in this list that are contained in
@@ -146,7 +147,7 @@ public interface HList {
      * @param c the c
      * @return boolean
      */
-    boolean retainAll(Collection c);
+    boolean retainAll(HCollection c);
 
     /***
      * Replaces the element at the specified position in this list with the specified element (optional operation)
@@ -168,7 +169,7 @@ public interface HList {
      * @param toIndex the to index
      * @return Returns a view of the portion of this list between the specified fromIndex, inclusive, and toIndex, exclusive
      */
-    HList sublist(int fromIndex, int toIndex);
+    ListAdapter sublist(int fromIndex, int toIndex);
 
     /***
      *

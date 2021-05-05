@@ -148,4 +148,9 @@ public class VectorAdaptee implements HVector {
     public void removeAllElements() {
         v.removeAllElements();
     }
+
+    @java.lang.Override
+    public String toString() {
+        return null;
+    }
 }

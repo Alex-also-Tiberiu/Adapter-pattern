@@ -86,4 +86,9 @@ public class HashtableAdaptee implements HHashtable {
     public void clear() {
         hash.clear();
     }
+
+    @java.lang.Override
+    public String toString() {
+        return null;
+    }
 }
