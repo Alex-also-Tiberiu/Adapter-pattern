@@ -150,7 +150,5 @@ public class VectorAdaptee implements HVector {
     }
 
     @java.lang.Override
-    public String toString() {
-        return null;
-    }
+    public String toString() { return v.toString(); }
 }

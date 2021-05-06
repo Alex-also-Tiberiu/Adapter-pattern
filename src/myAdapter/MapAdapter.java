@@ -1,8 +1,7 @@
 package myAdapter;
 
-import java.util.Collection;
-
 public class MapAdapter implements HMap {
+
     @Override
     public void clear() {
 
@@ -19,7 +18,7 @@ public class MapAdapter implements HMap {
     }
 
     @Override
-    public HSet entrySet() {
+    public Sett entrySet() {
         return null;
     }
 
@@ -34,7 +33,7 @@ public class MapAdapter implements HMap {
     }
 
     @Override
-    public HSet keySet() {
+    public Sett keySet() {
         return null;
     }
 
@@ -44,7 +43,7 @@ public class MapAdapter implements HMap {
     }
 
     @Override
-    public void putAll(HMap t) {
+    public void putAll(MapAdapter t) {
 
     }
 
@@ -59,7 +58,7 @@ public class MapAdapter implements HMap {
     }
 
     @Override
-    public Collection values() {
+    public HCollection values() {
         return null;
     }
 }

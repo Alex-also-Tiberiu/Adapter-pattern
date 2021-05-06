@@ -70,7 +70,7 @@ public class ListAdapter implements HList {
     public boolean contains(Object o) {
         if (o.equals(null))
             throw new NullPointerException("the list does not support to contain null elements");
-        ListIteratorr h = iterator();
+        Iteratorr h = iterator();
         while(h.hasNext()) {
             if (h.next().equals(o))
                 return true;
@@ -97,47 +97,57 @@ public class ListAdapter implements HList {
 
     @Override
     public Object get(int index) {
-        return null;
+        return v.indexOf(index);
     }
 
     @Override
     public int indexOf(Object o) {
-        return 0;
+        return v.indexOf(o);
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return v.isEmpty();
     }
 
     @Override
-    public ListIteratorr iterator() {
-        return new ListIteratorr();
+    public Iteratorr iterator() {
+
+        return new Iteratorr();
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        return 0;
+        return v.lastIndexOf(o);
     }
 
     @Override
     public ListIteratorr listIterator() {
-        return null;
+        return new ListIteratorr();
     }
 
     @Override
     public ListIteratorr listIterator(int index) {
-        return null;
+        if(index < 0 || index >= size())
+            throw new IndexOutOfBoundsException("It was introduced an invalid index");
+
+        return new ListIteratorr(index);
     }
 
     @Override
     public Object remove(int index) {
-        return null;
+        if(index < 0 || index >= size())
+            throw new IndexOutOfBoundsException("It was introduced an invalid index");
+        Object give = v.elementAt(index);
+        v.removeElementAt(index);
+        return give;
     }
 
     @Override
     public boolean remove(Object o) {
-        return false;
+        if(o.equals(null))
+            throw  new NullPointerException("Null object is not allowed");
+        return v.removeElement(o);
     }
 
     @Override
@@ -161,11 +171,6 @@ public class ListAdapter implements HList {
     }
 
     @Override
-    public ListAdapter sublist(int fromIndex, int toIndex) {
-        return null;
-    }
-
-    @Override
     public Object[] toArray() {
         return new Object[0];
     }
@@ -177,9 +182,9 @@ public class ListAdapter implements HList {
 
 
     /***
-     * Private Class that implements HListIterator
+     * Internal Class that implements HListIterator
      */
-    private class ListIteratorr implements HListIterator {
+    public class ListIteratorr implements HListIterator {
         private int place;
         private VectorAdaptee w;
         private boolean next;
@@ -192,11 +197,18 @@ public class ListAdapter implements HList {
             w = v;
         }
 
-        private ListIteratorr( ListAdapter l) {
+        private ListIteratorr( ListAdapter l ) {
             place = 0;
             next = false;
             prev = false;
             w = l.v;
+        }
+
+        private ListIteratorr( int index) {
+            place = index;
+            next = false;
+            prev = false;
+            w = v;
         }
 
         /*
@@ -207,7 +219,6 @@ public class ListAdapter implements HList {
             if(o.equals(null))
                 throw new NullPointerException("Null value is not accepted");
             w.insertElementAt(o, place);
-            place++;
         }
 
         /*
@@ -309,4 +320,46 @@ public class ListAdapter implements HList {
         }
 
     }
+
+
+    /***
+     * internal class that implements HIterator
+     */
+
+    private class Iteratorr implements HIterator {
+        private int place;
+        private VectorAdaptee w;
+        private boolean ok;
+
+        private Iteratorr() {
+            w = v;
+            place = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            if( place < w.size() ){
+                ok = true;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        @Override
+        public Object next() {
+            return w.elementAt(place++);
+        }
+
+        @Override
+        public void remove() {
+            if(ok) {
+                ok = false;
+                w.removeElementAt(place);
+            }
+            else
+                throw new IllegalArgumentException("Has next wasn't call");
+        }
+    }
+
 }
