@@ -165,8 +165,9 @@ public interface HVector {
     void addElement(Object obj);
 
     /***
-     * Adds the specified component to the end of this vector, increasing its size by one.
-     * The capacity of this vector is increased if its size becomes greater than its capacity.
+     * Removes the first occurrence of the argument from this vector. If the object is found in this vector,
+     * each component in the vector with an index greater or equal to the object’s index is shifted downward to have an
+     * index one smaller than the value it had previously.
      * @param obj - the component to be removed.
      * @return true if the argument was a component of this vector; false otherwise.
      */
