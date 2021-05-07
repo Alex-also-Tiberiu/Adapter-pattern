@@ -16,13 +16,17 @@ public class ListAdapter implements HList {
 
     @Override
     public void add(int index, Object element) {
+        if(element.equals(null))
+            throw new NullPointerException("null Object is not allowed");
+        if(index < 0 || index > size())
+            throw  new IndexOutOfBoundsException("you can do better");
         v.insertElementAt(element,index);
     }
 
     @Override
     public boolean add(Object o) {
         if(o.equals(null))
-            return false;
+            throw new NullPointerException("null Object is not allowed");
         else {
             v.addElement(o);
             return true;
@@ -31,6 +35,9 @@ public class ListAdapter implements HList {
 
     @Override
     public boolean addAll(HCollection c) {
+        if(c.equals(null))
+            throw new NullPointerException("null Collection is not allowed");
+
         HIterator h = c.iterator();
         /*
         devo usare un iteratore per scandire la list e poi inserirla nel vector
@@ -40,7 +47,10 @@ public class ListAdapter implements HList {
             return false;
         else {
             while (h.hasNext()) {
-                v.addElement(h.next());
+                if(h.next().equals(null))
+                    throw new NullPointerException("null object of the collection is not allowed");
+                else
+                    v.addElement(h.next());
             }
             return true;
         }
@@ -50,12 +60,17 @@ public class ListAdapter implements HList {
     public boolean addAll(int index, HCollection c) {
         if(index < 0 || index > size())
             throw new IndexOutOfBoundsException("select a different index to add the elements");
+        if(c.equals(null))
+            throw new NullPointerException("null Collection is not allowed");
         HIterator h = c.iterator();
         if(!h.hasNext())
             return false;
         else {
             while( h.hasNext() ) {
-                v.insertElementAt(h.next(),index++);
+                if(h.next().equals(null))
+                    throw new NullPointerException("null object of the Collection is not allowed");
+                else
+                    v.insertElementAt(h.next(),index++);
             }
             return true;
         }
@@ -63,8 +78,9 @@ public class ListAdapter implements HList {
 
     @Override
     public void clear() {
-        VectorAdaptee v2 = new VectorAdaptee();
-        v = v2;
+        int count = 0;
+        while(count++ < size())
+            v.setElementAt(null,count);
     }
 
     @Override
@@ -98,7 +114,22 @@ public class ListAdapter implements HList {
 
     @Override
     public boolean equals(Object o){
-        return false;
+        if(!(o instanceof ListAdapter))
+            return false;
+        ListIteratorr h1 = listIterator();
+        ListIteratorr h2 = new ListIteratorr((ListAdapter) o);
+        while(h1.hasNext() && h2.hasNext()) {
+            if(h1.next().equals(h2.next())) {
+                h1.next();
+                h2.next();
+            }
+            else
+                return false;
+        }
+        if(h1.hasNext() || h2.hasNext())
+            return false;
+        else
+            return true;
     }
 
     @Override
@@ -108,7 +139,13 @@ public class ListAdapter implements HList {
 
     @Override
     public int hashCode() {
-        return 0;
+        int hashCode = 1;
+        HIterator i = iterator();
+        while (i.hasNext()) {
+            Object obj = i.next();
+            hashCode = 31*hashCode + (obj==null ? 0 : obj.hashCode());
+        }
+        return hashCode;
     }
 
     @Override
@@ -227,18 +264,50 @@ public class ListAdapter implements HList {
     }
 
     @Override
-    public ListAdapter subList(int fromIndex, int toIndex) {
-        return null;
+    public HList subList(int fromIndex, int toIndex) {
+        if( fromIndex < 0 || toIndex > size() || fromIndex > toIndex)
+            throw new IndexOutOfBoundsException("fromIndex and toIndex are wrong, insert two index allowed");
+        ListAdapter l = new ListAdapter();
+        if(fromIndex == toIndex)
+            return l;
+        l = new ListAdapter(size());
+        int count = 0;
+        Object set = null;
+        while(fromIndex < toIndex) {
+            set = this.get(fromIndex++);
+            l.set(count++,set);
+        }
+        return l;
     }
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        Object[] a = new Object[size()];
+        if(isEmpty()) { }
+        else {
+            ListIteratorr h = listIterator();
+            int ia = 0;
+            while(h.hasNext()){
+                a[ia++] = h.next();
+            }
+        }
+        return a;
     }
 
     @Override
     public Object[] toArray(Object[] a) {
-        return new Object[0];
+        if (!(a instanceof Object))
+            throw new ArrayStoreException("invalis supertype of array");
+        if(a == null)
+            throw new NullPointerException("null array is not allowed");
+        if(a.length < size())
+            a = new Object[size()];
+        ListIteratorr h = listIterator();
+        int ia = 0;
+        while(h.hasNext()) {
+            a[ia++] = h.next();
+        }
+        return a;
     }
 
 

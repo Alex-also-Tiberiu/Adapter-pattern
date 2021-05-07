@@ -8,6 +8,7 @@ public class ListAdapterTest {
 
     @Test
     public void add() {
+
     }
 
     @Test
