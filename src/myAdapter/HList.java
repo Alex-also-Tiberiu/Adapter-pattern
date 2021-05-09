@@ -75,6 +75,7 @@ public interface HList extends HCollection {
      * (Note that this will occur if the specified collection is this list, and it's nonempty.)
      * @param index index at which to insert first element from the specified collection.
      * @param c elements to be inserted into this list.
+     * @return true if this list changed as a result of the call.
      * @throws UnsupportedOperationException if the addAll method is not supported by this list.
      * @throws ClassCastException if the class of one of elements of the specified collection prevents it from being added to this list.
      * @throws NullPointerException if the specified collection contains one or more null elements and this list does not support null elements, or if the specified collection is null.

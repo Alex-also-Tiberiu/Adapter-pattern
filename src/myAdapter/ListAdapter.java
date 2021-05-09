@@ -14,6 +14,7 @@ public class ListAdapter implements HList {
         v = new VectorAdaptee(rows);
     }
 
+
     @Override
     public void add(int index, Object element) {
         if(element.equals(null))
@@ -39,18 +40,16 @@ public class ListAdapter implements HList {
             throw new NullPointerException("null Collection is not allowed");
 
         HIterator h = c.iterator();
-        /*
-        devo usare un iteratore per scandire la list e poi inserirla nel vector
-         */
 
         if(!h.hasNext())
             return false;
         else {
             while (h.hasNext()) {
-                if(h.next().equals(null))
-                    throw new NullPointerException("null object of the collection is not allowed");
+                Object obj = h.next();
+                if(obj.equals(null))
+                    throw new NullPointerException("null element is not allowed");
                 else
-                    v.addElement(h.next());
+                    v.addElement(obj);
             }
             return true;
         }
@@ -67,10 +66,11 @@ public class ListAdapter implements HList {
             return false;
         else {
             while( h.hasNext() ) {
-                if(h.next().equals(null))
-                    throw new NullPointerException("null object of the Collection is not allowed");
+                Object obj = h.next();
+                if(obj.equals(null))
+                    throw new NullPointerException("null element is not allowed");
                 else
-                    v.insertElementAt(h.next(),index++);
+                    v.insertElementAt(obj,index++);
             }
             return true;
         }
@@ -134,7 +134,7 @@ public class ListAdapter implements HList {
 
     @Override
     public Object get(int index) {
-        return v.indexOf(index);
+        return v.elementAt(index);
     }
 
     @Override
@@ -456,12 +456,12 @@ public class ListAdapter implements HList {
      * internal class that implements HIterator
      */
 
-    private class Iteratorr implements HIterator {
+    public class Iteratorr implements HIterator {
         private int place;
         private VectorAdaptee w;
         private boolean ok;
 
-        private Iteratorr() {
+        public Iteratorr() {
             w = v;
             place = 0;
         }

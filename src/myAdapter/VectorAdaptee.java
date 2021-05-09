@@ -4,7 +4,13 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Vector;
 
+/**
+ * The type Vector adaptee.
+ */
 public class VectorAdaptee implements HVector {
+    /**
+     * The V.
+     */
     Vector v;
 
     /***
