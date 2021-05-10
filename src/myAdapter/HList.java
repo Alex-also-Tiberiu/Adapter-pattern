@@ -118,7 +118,6 @@ public interface HList extends HCollection {
      * (Two elements e1 and e2 are equal if (e1==null ? e2==null : e1.equals(e2)).)
      * In other words, two lists are defined to be equal if they contain the same elements in the same order.
      * This definition ensures that the equals method works properly across different implementations of the List interface.
-     * @
      * @param o the object to be compared for equality with this list.
      * @return true if the specified object is equal to this list.
      */

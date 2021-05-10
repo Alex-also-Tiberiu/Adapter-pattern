@@ -140,7 +140,7 @@ public interface HVector {
     /***
      * Deletes the component at the specified index. Each component in this vector with an index greater or equal
      * to the specified index is shifted downward to have an index one smaller than the value it had previously.
-     * The index must be a value greater than or equal to0 and less than the current size of the vector.
+     * The index must be a value greater than or equal to 0 and less than the current size of the vector.
      * @param index the index of the object to remove.
      * @throws  ArrayIndexOutOfBoundsException - if the index was invalid.
      */

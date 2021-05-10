@@ -78,9 +78,9 @@ public class ListAdapter implements HList {
 
     @Override
     public void clear() {
-        int count = 0;
-        while(count++ < size())
-            v.setElementAt(null,count);
+        while(!v.isEmpty()) {
+            v.removeElementAt(0);
+        }
     }
 
     @Override
@@ -89,10 +89,9 @@ public class ListAdapter implements HList {
             throw new NullPointerException("the list does not support to contain null elements");
         ListIteratorr h = listIterator();
         while(h.hasNext()) {
-            if (h.next().equals(o))
+            Object obj = h.next();
+            if (obj.equals(o))
                 return true;
-            else
-                h.next();
         }
         return false;
     }
@@ -101,15 +100,19 @@ public class ListAdapter implements HList {
     public boolean containsAll(HCollection c) {
         if(c.equals(null))
             throw new NullPointerException("null HCollection is not allowed");
+        if(c.size() > size())
+            return false;
+
+        int coincidence = 0;
         HIterator h = c.iterator();
-        int count = 0;
-        while(h.hasNext()) {
-            if(contains(h.next()))
-                count++;
-            else
-                break;
-        }
-        return count == c.size();
+        while (h.hasNext()) {
+            Object obj = h.next();
+            if (obj.equals(null))
+                throw new NullPointerException("null HCollection is not allowed");
+            else if (contains(obj))
+                coincidence++;
+            }
+        return coincidence == c.size();
     }
 
     @Override
@@ -150,6 +153,8 @@ public class ListAdapter implements HList {
 
     @Override
     public int indexOf(Object o) {
+        if(o.equals(null))
+            throw new NullPointerException("null object is not allowed");
         return v.indexOf(o);
     }
 
@@ -165,6 +170,8 @@ public class ListAdapter implements HList {
 
     @Override
     public int lastIndexOf(Object o) {
+        if(o.equals(null))
+            throw new NullPointerException("null element is not allowed");
         return v.lastIndexOf(o);
     }
 
@@ -201,20 +208,18 @@ public class ListAdapter implements HList {
     public boolean removeAll(HCollection c) {
         if(c.equals(null))
             throw new NullPointerException("null HCollection is not allowed");
-        HIterator h = iterator();
+        HIterator h = c.iterator();
         if( !h.hasNext() )
             return false;
         else {
             boolean set = false;
             while( h.hasNext() ){
-                if( v.removeElement(h.next()) ) {
-                    h.next();
+                Object obj = h.next();
+                if(obj.equals(null))
+                    throw new NullPointerException("null element detected in the HCollection");
+                else if( v.removeElement(obj) ) {
                     set = true;
                 }
-                else if(h.next().equals(null))
-                    throw new NullPointerException("null element detected in the HCollection");
-                else
-                    h.next();
             }
             return set;
         }
@@ -224,21 +229,20 @@ public class ListAdapter implements HList {
     public boolean retainAll(HCollection c) {
         if(c.equals(null))
             throw new NullPointerException("null HCollection is not allowed");
-        HIterator h = iterator();
+        HIterator h = c.iterator();
         if( !h.hasNext() )
             return false;
         else {
             boolean set = false;
             VectorAdaptee w = new VectorAdaptee();
             while(h.hasNext()) {
-                if(v.contains(h.next())) {
-                    w.addElement(h.next());
+                Object obj = h.next();
+                if(obj.equals(null))
+                    throw new NullPointerException("null element detected in the HCollection");
+                else if(v.contains(obj)) {
+                    w.addElement(obj);
                     set = true;
                 }
-                else if(h.next().equals(null))
-                    throw new NullPointerException("null element detected in the HCollection");
-                else
-                    h.next();
             }
             if(set)
                 v = w;
@@ -296,10 +300,10 @@ public class ListAdapter implements HList {
 
     @Override
     public Object[] toArray(Object[] a) {
-        if (!(a instanceof Object))
-            throw new ArrayStoreException("invalis supertype of array");
-        if(a == null)
+        if(a.equals(null))
             throw new NullPointerException("null array is not allowed");
+        if (!(a instanceof Object))
+            throw new ArrayStoreException("invalid supertype of array");
         if(a.length < size())
             a = new Object[size()];
         ListIteratorr h = listIterator();
