@@ -189,14 +189,44 @@ public class ListAdapterTest {
         list1.add("c");
 
         assertTrue(list1.size() == 3);
+
         list1.clear();
         assertTrue(list1.size() == 0);
         assertTrue(list1.isEmpty());
     }
 
     @Test
-    public void clearSublist() {
+    public void sublist() {
+        list1.add("a");
+        list1.add("b");
+        list1.add("c");
+        list1.add("a");
+        list1.add("b");
+        list1.add("c");
+        list2 = (ListAdapter) list1.subList(1,4);
 
+        assertTrue(list2.size() == 4);
+        assertEquals(list1.get(1),list2.get(0));
+        assertEquals(list1.get(2),list2.get(1));
+        assertEquals(list1.get(3),list2.get(2));
+        assertEquals(list1.get(4),list2.get(3));
+    }
+
+    @Test
+    public void clearSubList() {
+        list1.add("a");
+        list1.add("b");
+        list1.add("c");
+        list1.add("a");
+        list1.add("b");
+        list1.add("c");
+        //list1.subList(1,4).clear();
+        list2 = (ListAdapter) list1.subList(1,4);
+        list2.clear();
+        list2.set(1,"x");
+        list2.set(2,"y");
+        assertEquals(list1.get(1),list2.get(1));
+        //assertTrue(list1.size() == 2);
     }
 
     /***
@@ -468,8 +498,12 @@ public class ListAdapterTest {
         list1.add("b");
         list1.add("c");
         list1.add("e");
-        list2.addAll(list1);
-        list2.remove("e");
+
+        list2.add("b");
+        list2.add("c");
+        list2.add("a");
+        list2.add("b");
+
         assertTrue(list1.size() == 5);
         assertTrue(list2.size() == 4);
 
@@ -524,11 +558,28 @@ public class ListAdapterTest {
         Object[] b = list1.toArray();
         for(int i = 0; i < b.length;i++) {
             assertEquals(a[i],b[i]);
+            assertEquals(b[i],list1.get(i));
         }
     }
 
     @Test
     public void testToArray() {
+        Object[] a1 = new Object[2];
+        Object[] a2 = new Object[3];
+        list1.add("a");
+        list1.add("b");
+        list1.add("c");
+
+        a1 = list1.toArray(a1);
+        a2 = list1.toArray(a2);
+
+        assertTrue(a1.length == 3);
+        assertTrue(a2.length == 3);
+
+        for (int i = 0; i < 3; i++) {
+            assertEquals(a1[i],a2[i]);
+            assertEquals(a1[i],list1.get(i));
+        }
     }
 
     @Test (expected = NullPointerException.class)
@@ -536,10 +587,11 @@ public class ListAdapterTest {
         list1.toArray(null);
     }
 
-    /*@Test (expected = ArrayStoreException.class)
+    @Test (expected = ArrayStoreException.class)
     public void testToArrayStoreException() {
         list1.add("a");
         list1.add("b");
-        int[] array = new int[4];
-    }*/
+        Integer[] array = new Integer[4];
+        list1.toArray((Object[]) array);
+    }
 }

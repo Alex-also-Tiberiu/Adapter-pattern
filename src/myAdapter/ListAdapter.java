@@ -277,9 +277,9 @@ public class ListAdapter implements HList {
         l = new ListAdapter(size());
         int count = 0;
         Object set = null;
-        while(fromIndex < toIndex) {
+        while(fromIndex <= toIndex) {
             set = this.get(fromIndex++);
-            l.set(count++,set);
+            l.add(count++,set);
         }
         return l;
     }
