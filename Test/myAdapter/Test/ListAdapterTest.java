@@ -195,40 +195,6 @@ public class ListAdapterTest {
         assertTrue(list1.isEmpty());
     }
 
-    @Test
-    public void sublist() {
-        list1.add("a");
-        list1.add("b");
-        list1.add("c");
-        list1.add("a");
-        list1.add("b");
-        list1.add("c");
-        list2 = (ListAdapter) list1.subList(1,4);
-
-        assertTrue(list2.size() == 4);
-        assertEquals(list1.get(1),list2.get(0));
-        assertEquals(list1.get(2),list2.get(1));
-        assertEquals(list1.get(3),list2.get(2));
-        assertEquals(list1.get(4),list2.get(3));
-    }
-
-    @Test
-    public void clearSubList() {
-        list1.add("a");
-        list1.add("b");
-        list1.add("c");
-        list1.add("a");
-        list1.add("b");
-        list1.add("c");
-        //list1.subList(1,4).clear();
-        /*list2 = (ListAdapter) list1.subList(1,4);
-        list2.clear();
-        list2.set(1,"x");
-        list2.set(2,"y");
-        assertEquals(list1.get(1),list2.get(1));*/
-        //assertTrue(list1.size() == 2);
-    }
-
     /***
      * This method checks if the ListAdapter recognize an object already present.
      */
@@ -594,4 +560,39 @@ public class ListAdapterTest {
         Integer[] array = new Integer[4];
         list1.toArray((Object[]) array);
     }
+
+    @Test
+    public void sublist() {
+        list1.add("a");
+        list1.add("b");
+        list1.add("c");
+        list1.add("a");
+        list1.add("b");
+        list1.add("c");
+        list2 = list1.subList(1,4);
+
+        assertTrue(list2.size() == 3);
+        assertEquals(list1.get(1),list2.get(0));
+        assertEquals(list1.get(2),list2.get(1));
+        assertEquals(list1.get(3),list2.get(2));
+    }
+
+    @Test
+    public void clearSubList() {
+        list1.add("a");
+        list1.add("b");
+        list1.add("c");
+        list1.add("a");
+        list1.add("b");
+        list1.add("c");
+        list1.subList(1,4).clear();
+
+        assertTrue(list1.size() == 3);
+        assertTrue(list2.size() == 0);
+        assertEquals("a",list1.get(0));
+        assertEquals("b",list1.get(1));
+        assertEquals("c",list1.get(2));
+    }
+
+
 }

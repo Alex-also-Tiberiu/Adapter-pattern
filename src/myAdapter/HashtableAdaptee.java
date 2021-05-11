@@ -89,6 +89,6 @@ public class HashtableAdaptee implements HHashtable {
 
     @java.lang.Override
     public String toString() {
-        return null;
+        return hash.toString();
     }
 }

@@ -2,6 +2,16 @@ package myAdapter;
 
 public class MapAdapter implements HMap {
 
+    private HHashtable table;
+
+    public MapAdapter() {
+        table = new HashtableAdaptee();
+    }
+
+    public MapAdapter(int initialCapacity) {
+        table = new HashtableAdaptee(initialCapacity);
+    }
+
     @Override
     public void clear() {
 
@@ -18,7 +28,7 @@ public class MapAdapter implements HMap {
     }
 
     @Override
-    public Sett entrySet() {
+    public HSet entrySet() {
         return null;
     }
 
@@ -33,7 +43,7 @@ public class MapAdapter implements HMap {
     }
 
     @Override
-    public Sett keySet() {
+    public HSet keySet() {
         return null;
     }
 
@@ -60,5 +70,30 @@ public class MapAdapter implements HMap {
     @Override
     public HCollection values() {
         return null;
+    }
+
+    public class Entry implements HEntry {
+
+        private Object key,value;
+
+        public Entry(Object key,Object value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        @Override
+        public Object getKey() {
+            return key;
+        }
+
+        @Override
+        public Object getValue() {
+            return value;
+        }
+
+        @Override
+        public Object setValue(Object value) {
+            return this.value = value;
+        }
     }
 }

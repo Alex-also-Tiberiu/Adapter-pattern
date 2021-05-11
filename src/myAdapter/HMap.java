@@ -42,7 +42,7 @@ public interface HMap {
      * It does not support the add or addAll operations.
      * @return a set view of the mappings contained in this map.
      */
-    Sett entrySet();
+    HSet entrySet();
 
     /**
      * Compares the specified object with this map for equality.
@@ -88,7 +88,7 @@ public interface HMap {
      * via the Iterator.remove, Set.remove, removeAll retainAll, and clear operations. It does not support the add or addAll operations.
      * @return a set view of the keys contained in this map.
      */
-    Sett keySet();
+    HSet keySet();
 
     /**
      * Associates the specified value with the specified key in this map (optional operation).
@@ -147,7 +147,7 @@ public interface HMap {
      */
     HCollection values();
 
-    public static interface Entry {
+    public static interface HEntry {
         /**
          * Compares the specified object with this entry for equality.
          * Returns true if the given object is also a map entry and the two entries represent the same mapping.

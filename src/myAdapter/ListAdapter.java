@@ -1,10 +1,13 @@
 package myAdapter;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class ListAdapter implements HList {
     private VectorAdaptee v;
+    private int from;
+    private int to;
 
     public ListAdapter() {
         v = new VectorAdaptee();
@@ -252,7 +255,7 @@ public class ListAdapter implements HList {
 
     @Override
     public Object set(int index, Object element) {
-        if(index < 0 || index >= size())
+        if(index < 0 || index >= size() )
             throw new IndexOutOfBoundsException("index not valid");
         if(element.equals(null))
             throw new NullPointerException("null element is not allowed");
@@ -267,7 +270,7 @@ public class ListAdapter implements HList {
         return v.size();
     }
 
-    @Override
+    /*@Override
     public HList subList(int fromIndex, int toIndex) {
         if( fromIndex < 0 || toIndex > size() || fromIndex > toIndex)
             throw new IndexOutOfBoundsException("fromIndex and toIndex are wrong, insert two index allowed");
@@ -282,7 +285,8 @@ public class ListAdapter implements HList {
             l.add(count++,set);
         }
         return l;
-    }
+    }*/
+
 
     @Override
     public Object[] toArray() {
@@ -312,6 +316,66 @@ public class ListAdapter implements HList {
             a[ia++] = h.next();
         }
         return a;
+    }
+
+    @Override
+    public ListAdapter subList(int fromIndex, int toIndex) {
+        subListRangeCheck(fromIndex, toIndex, this.size());
+        return new ListAdapter.SmallerList(this.v, fromIndex, toIndex);
+    }
+
+    private static void subListRangeCheck(int fromIndex, int toIndex, int size) {
+        if (fromIndex < 0)
+            throw new IndexOutOfBoundsException("fromIndex = " + fromIndex);
+        if (toIndex > size)
+            throw new IndexOutOfBoundsException("toIndex = " + toIndex);
+        if (fromIndex > toIndex)
+            throw new IllegalArgumentException("fromIndex(" + fromIndex +
+                    ") > toIndex(" + toIndex + ")");
+    }
+
+    private class SmallerList extends ListAdapter {
+
+        VectorAdaptee w;
+        int startPosition = 0;
+        int endPosition = 0;
+
+        private SmallerList(VectorAdaptee x, int startPosition, int endPosition){
+            w = x;
+            this.startPosition = startPosition;
+            this.endPosition = endPosition;
+        }
+
+        // overwrite some directly to appear smaller
+        public int size(){
+            return endPosition-startPosition;
+        }
+
+        // overwrite others to make adjustments to the correct position in the parentList
+        public void add(int index, Object object){
+            w.insertElementAt(object,index+startPosition);
+        }
+
+        // overwrite others to only search between startPosition and endPosition
+        public boolean contains (Object object){
+            for (int i=startPosition;i<endPosition;i++){
+                if (w.elementAt(i).equals(object)){
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public void clear() {
+            for(int i = startPosition; i < endPosition; i++) {
+                w.removeElementAt(startPosition);
+            }
+        }
+
+        public Object get(int index) {
+            return w.elementAt(startPosition+index);
+        }
+
     }
 
 

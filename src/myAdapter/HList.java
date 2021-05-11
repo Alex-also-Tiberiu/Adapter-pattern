@@ -276,7 +276,7 @@ public interface HList extends HCollection {
      * @return a view of the specified range within this list.
      * @throws IndexOutOfBoundsException - for an illegal endpoint index value (fromIndex < 0 || toIndex > size || fromIndex > toIndex).
      */
-    HList subList(int fromIndex, int toIndex);
+    ListAdapter subList(int fromIndex, int toIndex);
 
     /**
      * Returns an array containing all of the elements in this list in proper sequence.
