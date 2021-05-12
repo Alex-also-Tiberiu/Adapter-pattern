@@ -125,9 +125,9 @@ public class ListAdapter implements HList {
         ListIteratorr h1 = listIterator();
         ListIteratorr h2 = new ListIteratorr((ListAdapter) o);
         while(h1.hasNext() && h2.hasNext()) {
-            if(h1.next().equals(h2.next())) {
-                h1.next();
-                h2.next();
+            Object obj1 = h1.next();
+            Object obj2 = h2.next();
+            if(obj1.equals(obj2)) {
             }
             else
                 return false;
@@ -575,7 +575,7 @@ public class ListAdapter implements HList {
     /***
      * Internal Class that implements HListIterator
      */
-    public class ListIteratorr implements HListIterator {
+    private class ListIteratorr implements HListIterator {
         private int place;
         private final int start;
         private final int to;
@@ -748,7 +748,7 @@ public class ListAdapter implements HList {
      * internal class that implements HIterator
      */
 
-    public class Iteratorr implements HIterator {
+    private class Iteratorr implements HIterator {
         private int place;
         private final int start;
         private final int to;

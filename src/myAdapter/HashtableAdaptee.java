@@ -7,17 +7,19 @@ public class HashtableAdaptee implements HHashtable {
 
     Hashtable hash;
     /***
-     *  Constructs a new, empty hashtable with a default initial capacity (11) and load factor (0.75).
+     *  Constructs a new, empty hashtable with a default initial capacity and load factor.
      */
     public HashtableAdaptee() {
         hash = new Hashtable();
     }
 
-    /*
-        Questo costruttore può lanciare IllegalArgumentException
-        se l'intero è un negativo
+    /***
+     * Constructs a new, empty hashtable with the specified initial capacity.
+     * @param initialCapacity - the initial capacity of the hashtable.
      */
     public HashtableAdaptee(int initialCapacity) {
+        if(initialCapacity < 0 )
+            throw new IndexOutOfBoundsException("negative index is not allowed");
         hash = new Hashtable(initialCapacity);
     }
 
@@ -32,7 +34,7 @@ public class HashtableAdaptee implements HHashtable {
     }
 
     @Override
-    public Enumeration Keys() {
+    public Enumeration keys() {
         return hash.keys();
     }
 

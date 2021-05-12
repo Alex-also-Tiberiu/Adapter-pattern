@@ -1,6 +1,6 @@
 package myAdapter;
 
-public interface HSet {
+public interface HSet extends HCollection {
     /**
      * Adds the specified element to this set if it is not already present (optional operation).
      * More formally, adds the specified element, o, to this set if this set contains no element e such that (o==null ? e==null : o.equals(e)).
@@ -11,7 +11,7 @@ public interface HSet {
      * Individual set implementations should clearly document any restrictions on the the elements that they may contain.
      * @param o - element to be added to this set.
      * @return true if this set did not already contain the specified element.
-     * @throws UnsupportedOperationException - if the add method is not supported by this set.
+     * @throws myAdapter.UnsupportedOperationException - if the add method is not supported by this set.
      * @throws ClassCastException - if the class of the specified element prevents it from being added to this set.
      * @throws NullPointerException - if the specified element is null and this set does not support null elements.
      * @throws IllegalArgumentException - if some aspect of the specified element prevents it from being added to this set.
@@ -24,7 +24,7 @@ public interface HSet {
      * The behavior of this operation is unspecified if the specified collection is modified while the operation is in progress.
      * @param c - collection whose elements are to be added to this set.
      * @return true if this set changed as a result of the call.
-     * @throws UnsupportedOperationException - if the addAll method is not supported by this set.
+     * @throws myAdapter.UnsupportedOperationException - if the addAll method is not supported by this set.
      * @throws ClassCastException - if the class of some element of the specified collection prevents it from being added to this set.
      * @throws NullPointerException - if the specified collection contains one or more null elements and this set does not support null elements, or if the specified collection is null.
      * @throws IllegalArgumentException - if some aspect of some element of the specified collection prevents it from being added to this set.
