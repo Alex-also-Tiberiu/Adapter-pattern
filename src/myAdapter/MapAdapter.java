@@ -27,14 +27,8 @@ public class MapAdapter implements HMap {
     }
 
     @Override
-    public boolean containsValue(Object value) {
-        return table.contains(value);
-    }
+    public boolean containsValue(Object value) { return table.contains(value); }
 
-    /***
-     *
-     * @return
-     */
     @Override
     public HSet entrySet() { return new EntrySet(table); }
 
@@ -87,10 +81,6 @@ public class MapAdapter implements HMap {
     @Override
     public boolean isEmpty() { return table.isEmpty(); }
 
-    /***
-     *
-     * @return
-     */
     @Override
     public HSet keySet() { return new SetKey(table); }
 
@@ -102,10 +92,6 @@ public class MapAdapter implements HMap {
         return table.put(e.getKey(),e.getValue());
     }
 
-    /**
-     *
-     * @param t - Mappings to be stored in this map.
-     */
     @Override
     public void putAll(HMap t) {
         if(!(t instanceof HMap))
@@ -131,14 +117,10 @@ public class MapAdapter implements HMap {
     @Override
     public int size() { return table.size(); }
 
-    /***
-     *
-     * @return
-     */
     @Override
     public HCollection values() { return new SetValue(table); }
 
-    public class Entry implements HEntry {
+    public static class Entry implements HEntry {
 
         private Object key,value;
 
