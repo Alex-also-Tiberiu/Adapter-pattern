@@ -3,7 +3,9 @@ package myAdapter;
 public class UnsupportedOperationException extends RuntimeException{
 
     public UnsupportedOperationException(String s) {
-        System.out.println(s);
+        super(s);
     }
-    public UnsupportedOperationException() {}
+    public UnsupportedOperationException() {
+        super();
+    }
 }

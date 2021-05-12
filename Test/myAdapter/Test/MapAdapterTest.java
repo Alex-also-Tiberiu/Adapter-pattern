@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
  * I create further classes to test the other classes that MapAdapter depend, which are EntrySet ,SetKey, SetValue, IterK, IterV.
  * This class use two MapAdapter variables and two MapAdapter.Entry variables which are implemented before all the test will start.
  * I used this design because first of all we need at least one MapAdapter to execute all the tests.
- * All the methods are described to give a full view of what was done.
+ * All the methods are described to give a full view of what was done, each one can also represent a different behavior of MapAdapter.
  * All the Execution Records are obtained by the execution of MATestRunner.
  */
 public class MapAdapterTest {
@@ -32,13 +32,15 @@ public class MapAdapterTest {
     public MapAdapter.Entry e2;
 
     /***
+     * This method is executed before all the tests in this class.
      * This method create an instance of MapAdapter with a default capacity,
      * and another MapAdapter with an initial capacity introduced as a parameter.
      * In the end create two different instance of MapAdapter.Entry.
-     * After the execution of this method here will be present two MapAdapter that can be used by all the test case.
+     * After the execution of this method here will be present two MapAdapter that can be used by all the test cases.
      * Execution Record: initializationError(myAdapter.Test.MapAdapterTest): Invalid test class 'myAdapter.Test.MapAdapterTest':
      *   1. No runnable methods
-     * false
+     * false.
+     * the execution record was obtained after the implementation of all other the tests.
      */
     @Before
     public void setup() {
@@ -110,7 +112,8 @@ public class MapAdapterTest {
     /***
      * This method test the proper functioning of clear().
      * At the beginning the MapAdapter is empty, after that it was introduced two elements.
-     * The size of the MapAdapter is verified, after that it was used clear and the size of MapAdapter is verified.
+     * The size of the MapAdapter was verified at two, after that it was used clear and the size of MapAdapter was verified at 0.
+     * The post condition is that the map has no elements and it's empty.
      * Execution Record : true.
      */
     @Test
@@ -122,6 +125,7 @@ public class MapAdapterTest {
         assertTrue(map1.size() == 2);
 
         map1.clear();
+        assertEquals(0,map1.size());
         assertTrue(map1.isEmpty());
     }
 
