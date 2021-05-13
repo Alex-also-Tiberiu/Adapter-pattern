@@ -250,7 +250,7 @@ public class MapAdapter implements HMap {
 
         @Override
         public HIterator iterator() {
-            return new Iterk(tab);
+            return new IterE(tab);
         }
 
         @Override
@@ -273,10 +273,10 @@ public class MapAdapter implements HMap {
             if(c.equals(null))
                 throw new NullPointerException("null HCollection is not allowed");
             EntrySet es = (EntrySet) c;
-            Iterk iterk = (Iterk) es.iterator();
+            IterE itere = (IterE) es.iterator();
             boolean set = false;
-            while(iterk.hasNext()){
-                Object obj = iterk.next();
+            while(itere.hasNext()){
+                Object obj = itere.next();
                 if(remove(obj))
                     set = true;
             }

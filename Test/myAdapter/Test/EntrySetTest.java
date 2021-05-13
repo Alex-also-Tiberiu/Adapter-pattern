@@ -249,7 +249,7 @@ public class EntrySetTest {
     }
 
     /***
-     * This method tests if the iterator implemented on EntrySet has next elements to iterate.
+     * This method tests if the iterator implemented on EntrySet has next elements to iterate.<br>
      * Execution Record : true.
      */
     @Test
@@ -261,21 +261,26 @@ public class EntrySetTest {
     }
 
     /***
-     * This method tests if the iterator implemented on EntrySet give back the
+     * This method tests if the iterator implemented on EntrySet give back a Entry type. <br>
+     * An iterator is generated on Entryset2 that is not empty, then for each entry object returned by the iterator its presence in Mapadapter2 and EntrySet2 is verified. <br>
+     * In this case we also checked the backing between Mapadapter and Entryset of the iterator.<br>
+     * Execution Record : true.
      */
     @Test
     public void iteratorNextElement(){
         HIterator h2 = es2.iterator();
         while(h2.hasNext()) {
-            assertTrue(m2.containsKey(h2.next()));
+            MapAdapter.Entry entry = (MapAdapter.Entry) h2.next();
+            assertTrue(m2.containsKey(entry.getKey()) && m2.containsValue(m2.get(entry.getKey())));
+            assertTrue(es2.contains(entry));
         }
     }
 
     /***
      * This method tests the HSet.remove() method. <br>
      * Initially, it is verified that Entryset2 has the elements with which it has been initialized and its size is 4,
-     * then all the elements are removed and its size is verified to 0.
-     * finally an element is removed that is not present in the Entryset, therefore this removals is not true. <br>
+     * then all the elements are removed and its size is verified to 0.<br>
+     * Finally an element is removed that is not present in the Entryset, therefore this removals is not true. <br>
      * Execution Record : true.
      */
     @Test
