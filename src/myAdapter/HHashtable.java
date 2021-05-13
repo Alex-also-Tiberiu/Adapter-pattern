@@ -53,7 +53,7 @@ public interface HHashtable {
     /***
      * Returns the value to which the specified key is mapped in this hashtable.
      * @param key - a key in the hashtable
-     * @return the value to which the key is mapped in this hashtable;null if the key is not mapped to any value in this hashtable.
+     * @return the value to which the key is mapped in this hashtable; null if the key is not mapped to any value in this hashtable.
      */
    Object get (Object key);
 

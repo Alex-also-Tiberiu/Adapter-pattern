@@ -1,12 +1,10 @@
 package myAdapter;
-
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
 public class MapAdapter implements HMap {
 
     private HashtableAdaptee table;
-
 
     public MapAdapter() {
         table = new HashtableAdaptee();
@@ -34,28 +32,14 @@ public class MapAdapter implements HMap {
 
     @Override
     public boolean equals(Object o){
-        if(o.equals(null) || ! (o instanceof HMap))
+        if(! (o instanceof HMap))
             return false;
         MapAdapter m = (MapAdapter) o;
-        EntrySet e1 = (EntrySet) m.keySet();
-        EntrySet e2 = (EntrySet) this.keySet();
-        Iterk iterk1 = (Iterk) e1.iterator();
-        Iterk iterk2 = (Iterk) e2.iterator();
-        while(iterk1.hasNext() && iterk2.hasNext()) {
-            Object obj1 = iterk1.next();
-            Object obj2 = iterk2.next();
-            if(obj1.equals(obj2)) {
-                if(table.get(obj1).equals(table.get(obj2))) {}
-                else
-                    return false;
-            }
-            else
-                return false;
-        }
-        if(iterk1.hasNext() || iterk2.hasNext())
+        if(this.size() > m.size())
             return false;
-        else
-            return true;
+        EntrySet e1 = (EntrySet) this.entrySet();
+        EntrySet e2 = (EntrySet) m.entrySet();
+        return e1.equals(e2);
     }
 
     @Override
@@ -86,24 +70,22 @@ public class MapAdapter implements HMap {
 
     @Override
     public Object put(Object key, Object value) {
-        if(key.equals(null))
-            throw new NullPointerException("null key is not allowed");
         Entry e = new Entry(key,value);
         return table.put(e.getKey(),e.getValue());
     }
 
     @Override
     public void putAll(HMap t) {
-        if(!(t instanceof HMap))
-            throw new ClassCastException("incompatible type");
         if(t.equals(null))
             throw new NullPointerException("null map is not allowed");
+        if(!(t instanceof HMap))
+            throw new ClassCastException("incompatible type");
         MapAdapter m = (MapAdapter) t;
         Enumeration e = m.table.keys();
         Object obj;
         while(e.hasMoreElements()) {
             obj = e.nextElement();
-            this.put(obj,table.get(obj));
+            this.put(obj,m.table.get(obj));
         }
     }
 
@@ -120,6 +102,11 @@ public class MapAdapter implements HMap {
     @Override
     public HCollection values() { return new SetValue(table); }
 
+
+    /***
+     * public static class Entry that implements HEntry.
+     * HEntry is a public static interface nested in HMap.
+     */
     public static class Entry implements HEntry {
 
         private Object key,value;
@@ -149,12 +136,13 @@ public class MapAdapter implements HMap {
         }
 
         public boolean equals(Object o) {
-            if (o ==  null) {
-                throw new NullPointerException();
-            }
             if (!(o instanceof Entry)) {
                 return false;
             }
+            if (o.equals(null)) {
+                throw new NullPointerException();
+            }
+
             Entry e = (Entry) o;
             if (e.getKey().equals(key) && e.getValue().equals(value)) {
                 return true;
@@ -170,7 +158,10 @@ public class MapAdapter implements HMap {
         }
     }
 
-
+    /***
+     * Private internal class that implements HSet.
+     * Used to Generate a HSet of Entry, HCollection is extended by HSet, HSet is implemented by EntrySet
+     */
     private class EntrySet implements HSet {
 
         private HashtableAdaptee tab;
@@ -196,33 +187,44 @@ public class MapAdapter implements HMap {
 
         @Override
         public boolean contains(Object o) {
-            if(! (o instanceof Entry))
-                throw new ClassCastException("Entry Object is required");
             if(o.equals(null))
                 throw new NullPointerException("null Entry is not allowed");
+            if(! (o instanceof Entry))
+                throw new ClassCastException("Entry Object is required");
+
             Entry e = (Entry) o;
-            return tab.containsKey(e.getKey()) && tab.contains(e.getValue());
+            if(!tab.containsKey(e.getKey()))
+                return false;
+            Object value = tab.get(e.getKey());
+            return value.equals(e.getValue());
         }
 
         @Override
         public boolean containsAll(HCollection c) {
             if(c.equals(null))
                 throw new NullPointerException("null collection is not allowed");
-            if(! (c instanceof EntrySet))
+            if(!(c instanceof EntrySet))
                 throw new ClassCastException("Different HCollection of EntrySet is not allowed");
             EntrySet e = (EntrySet) c;
-            Iterk it = (Iterk) e.iterator();
-            boolean set = true;
-            while(it.hasNext() && set) {
-                Object obj = it.next();
-                set = contains(obj);
+            if(e.size() > size())
+                return false;
+            IterE it = (IterE) e.iterator();
+            boolean set1 = true;
+            boolean set2 = true;
+            Object val;
+            Object val2;
+            while(it.hasNext() && set1 && set2) {
+                Entry entry = (Entry) it.next();
+                set1 = tab.containsKey(entry.getKey());
+                val = tab.get(entry.getKey());
+                set2 = val.equals(entry.getValue());
             }
-            return set;
+            return set1 && set2;
         }
 
         @Override
         public boolean equals(Object o) {
-            if (o.equals(null) || !(o instanceof EntrySet) || ((EntrySet) o).size() != size())
+            if (!(o instanceof EntrySet) ||  o.equals(null) || ((EntrySet) o).size() != size())
                 return false;
             EntrySet e = (EntrySet) o;
             return containsAll(e);
@@ -253,10 +255,10 @@ public class MapAdapter implements HMap {
 
         @Override
         public boolean remove(Object o) {
-            if(o.equals(null))
-                throw new NullPointerException("null element is not allowed");
             if(! (o instanceof Entry))
                 throw new ClassCastException("different class from Entry is not allowed");
+            if(o.equals(null))
+                throw new NullPointerException("null element is not allowed");
             Entry e = (Entry) o;
             boolean set = contains(e);
             if(set)
@@ -266,10 +268,10 @@ public class MapAdapter implements HMap {
 
         @Override
         public boolean removeAll(HCollection c) {
-            if(c.equals(null))
-                throw new NullPointerException("null HCollection is not allowed");
             if(! (c instanceof EntrySet))
                 throw new ClassCastException("incompatible type");
+            if(c.equals(null))
+                throw new NullPointerException("null HCollection is not allowed");
             EntrySet es = (EntrySet) c;
             Iterk iterk = (Iterk) es.iterator();
             boolean set = false;
@@ -283,10 +285,10 @@ public class MapAdapter implements HMap {
 
         @Override
         public boolean retainAll(HCollection c) {
-            if(c.equals(null))
-                throw new NullPointerException("null HCollection is not allowed");
             if(! (c instanceof EntrySet))
                 throw new ClassCastException("incompatible type");
+            if(c.equals(null))
+                throw new NullPointerException("null HCollection is not allowed");
             if(c.isEmpty())
                 return false;
             EntrySet es = (EntrySet) c;
@@ -324,10 +326,10 @@ public class MapAdapter implements HMap {
 
         @Override
         public Object[] toArray(Object[] a) {
-            if(a.equals(null))
-                throw new NullPointerException("null array is not allowed");
             if(! (a instanceof Entry[]))
                 throw  new ClassCastException("incompatible type");
+            if(a.equals(null))
+                throw new NullPointerException("null array is not allowed");
             if(a.length < size())
                 return toArray();
             else {
@@ -342,11 +344,57 @@ public class MapAdapter implements HMap {
             }
             return a;
         }
+
+        /***
+         * private internal class that implements HIterator.
+         * It is used to give back by the iterator of the class EntrySet an Object of Entry type.
+         */
+        private class IterE implements HIterator {
+
+            private Enumeration enumerk;
+            private boolean hasIterate = false;
+            private HashtableAdaptee tab;
+            private Object lastKey,lastValue;
+
+            private IterE(HashtableAdaptee h) {
+                tab = h;
+                enumerk = tab.keys();
+            }
+
+
+            @Override
+            public boolean hasNext() {
+                return enumerk.hasMoreElements();
+            }
+
+            /***
+             *
+             * @return the next Entry(key,value)
+             */
+            @Override
+            public Object next() {
+                if (!enumerk.hasMoreElements()) {
+                    throw new NoSuchElementException();
+                }
+                hasIterate = true;
+                lastKey = enumerk.nextElement();
+                lastValue = tab.get(lastKey);
+                return new Entry(lastKey,lastValue);
+            }
+
+            @Override
+            public void remove() {
+                if (!hasIterate) {
+                    throw new IllegalStateException();
+                }
+                tab.remove(lastKey);
+            }
+        }
     }
 
     /***
-     * private internal class that implements HSet
-     * Used to generate a Set of Keys
+     * private internal class that implements HSet.
+     * Used to generate a HSet of Keys, HCollection is extended by HSet, HSet is implemented by SetKey
      */
     private class SetKey implements HSet {
 
@@ -495,8 +543,8 @@ public class MapAdapter implements HMap {
 
 
     /***
-     * private internal class that Extends EntrySet
-     * Used to generate a Collection of values, Collection in this case is extended by HSet and implemented by SetValue
+     * private internal class that Extends EntrySet.
+     * Used to generate a HCollection of values, HCollection is extended by HSet, HSet is implemented by SetValue
      */
     private class SetValue implements HSet {
         private HashtableAdaptee tabv;
@@ -702,7 +750,7 @@ public class MapAdapter implements HMap {
 
 
     /***
-     * private internal class that implements HIterator
+     * private internal class that implements HIterator.
      */
     private class Iterk implements HIterator {
 
@@ -724,7 +772,7 @@ public class MapAdapter implements HMap {
 
         /***
          *
-         * @return the nextKey
+         * @return the next key
          */
         @Override
         public Object next() {

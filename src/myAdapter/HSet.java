@@ -12,9 +12,6 @@ public interface HSet extends HCollection {
      * @param o - element to be added to this set.
      * @return true if this set did not already contain the specified element.
      * @throws myAdapter.UnsupportedOperationException - if the add method is not supported by this set.
-     * @throws ClassCastException - if the class of the specified element prevents it from being added to this set.
-     * @throws NullPointerException - if the specified element is null and this set does not support null elements.
-     * @throws IllegalArgumentException - if some aspect of the specified element prevents it from being added to this set.
      */
     boolean add(Object o);
 
@@ -25,9 +22,6 @@ public interface HSet extends HCollection {
      * @param c - collection whose elements are to be added to this set.
      * @return true if this set changed as a result of the call.
      * @throws myAdapter.UnsupportedOperationException - if the addAll method is not supported by this set.
-     * @throws ClassCastException - if the class of some element of the specified collection prevents it from being added to this set.
-     * @throws NullPointerException - if the specified collection contains one or more null elements and this set does not support null elements, or if the specified collection is null.
-     * @throws IllegalArgumentException - if some aspect of some element of the specified collection prevents it from being added to this set.
      */
     boolean addAll(HCollection c);
 
