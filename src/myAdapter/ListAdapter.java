@@ -566,12 +566,6 @@ public class ListAdapter implements HList {
 
 
 
-
-
-
-
-
-
     /***
      * Internal Class that implements HListIterator
      */

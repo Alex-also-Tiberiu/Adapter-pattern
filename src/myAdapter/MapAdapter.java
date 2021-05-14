@@ -191,7 +191,6 @@ public class MapAdapter implements HMap {
                 throw new NullPointerException("null Entry is not allowed");
             if(! (o instanceof Entry))
                 throw new ClassCastException("Entry Object is required");
-
             Entry e = (Entry) o;
             if(!tab.containsKey(e.getKey()))
                 return false;
@@ -224,7 +223,7 @@ public class MapAdapter implements HMap {
 
         @Override
         public boolean equals(Object o) {
-            if (!(o instanceof EntrySet) ||  o.equals(null) || ((EntrySet) o).size() != size())
+            if (!(o instanceof EntrySet) ||  o == null || ((EntrySet) o).size() != size())
                 return false;
             EntrySet e = (EntrySet) o;
             return containsAll(e);
@@ -255,10 +254,10 @@ public class MapAdapter implements HMap {
 
         @Override
         public boolean remove(Object o) {
-            if(! (o instanceof Entry))
-                throw new ClassCastException("different class from Entry is not allowed");
             if(o.equals(null))
                 throw new NullPointerException("null element is not allowed");
+            if(! (o instanceof Entry))
+                throw new ClassCastException("different class from Entry is not allowed");
             Entry e = (Entry) o;
             boolean set = contains(e);
             if(set)
@@ -268,10 +267,10 @@ public class MapAdapter implements HMap {
 
         @Override
         public boolean removeAll(HCollection c) {
-            if(! (c instanceof EntrySet))
-                throw new ClassCastException("incompatible type");
             if(c.equals(null))
                 throw new NullPointerException("null HCollection is not allowed");
+            if(! (c instanceof EntrySet))
+                throw new ClassCastException("incompatible type");
             EntrySet es = (EntrySet) c;
             IterE itere = (IterE) es.iterator();
             boolean set = false;
@@ -285,23 +284,22 @@ public class MapAdapter implements HMap {
 
         @Override
         public boolean retainAll(HCollection c) {
-            if(! (c instanceof EntrySet))
-                throw new ClassCastException("incompatible type");
             if(c.equals(null))
                 throw new NullPointerException("null HCollection is not allowed");
+            if(! (c instanceof EntrySet))
+                throw new ClassCastException("incompatible type");
             if(c.isEmpty())
                 return false;
             EntrySet es = (EntrySet) c;
-            Iterk iterk = (Iterk) es.iterator();
+            IterE itere = (IterE) iterator();
             boolean set = false;
-            HashtableAdaptee newTAb = new HashtableAdaptee(c.size());
-            while(iterk.hasNext()){
-                Object obj = iterk.next();
-                if(contains(obj))
-                    newTAb.put(obj,tab.get(obj));
+            while(itere.hasNext()){
+                Entry obj = (Entry) itere.next();
+                if(!es.contains(obj)) {
+                    remove(obj);
                     set = true;
+                }
             }
-            tab = newTAb;
             return set;
         }
 
@@ -313,12 +311,10 @@ public class MapAdapter implements HMap {
         @Override
         public Object[] toArray() {
             Entry[] array = new Entry[tab.size()];
-            Iterk iterk = (Iterk) iterator();
-            Entry e;
+            IterE itere = (IterE) iterator();
             int counter = 0;
-            while (iterk.hasNext()){
-                Object obj = iterk.next();
-                e = new Entry(obj,tab.get(obj));
+            while (itere.hasNext()){
+                Entry e = (Entry) itere.next();
                 array[counter++] = e;
             }
             return array;
@@ -326,10 +322,10 @@ public class MapAdapter implements HMap {
 
         @Override
         public Object[] toArray(Object[] a) {
-            if(! (a instanceof Entry[]))
-                throw  new ClassCastException("incompatible type");
             if(a.equals(null))
                 throw new NullPointerException("null array is not allowed");
+            if(! (a instanceof Entry[]))
+                throw  new ClassCastException("incompatible type");
             if(a.length < size())
                 return toArray();
             else {
@@ -341,56 +337,16 @@ public class MapAdapter implements HMap {
                     e = new Entry(obj, tab.get(obj));
                     a[counter++] = e;
                 }
+                while(counter < a.length)
+                    a[counter++] = null;
             }
             return a;
         }
 
-        /***
-         * private internal class that implements HIterator.
-         * It is used to give back by the iterator of the class EntrySet an Object of Entry type.
-         */
-        private class IterE implements HIterator {
 
-            private Enumeration enumerk;
-            private boolean hasIterate = false;
-            private HashtableAdaptee tab;
-            private Object lastKey,lastValue;
-
-            private IterE(HashtableAdaptee h) {
-                tab = h;
-                enumerk = tab.keys();
-            }
-
-
-            @Override
-            public boolean hasNext() {
-                return enumerk.hasMoreElements();
-            }
-
-            /***
-             *
-             * @return the next Entry(key,value)
-             */
-            @Override
-            public Object next() {
-                if (!enumerk.hasMoreElements()) {
-                    throw new NoSuchElementException();
-                }
-                hasIterate = true;
-                lastKey = enumerk.nextElement();
-                lastValue = tab.get(lastKey);
-                return new Entry(lastKey,lastValue);
-            }
-
-            @Override
-            public void remove() {
-                if (!hasIterate) {
-                    throw new IllegalStateException();
-                }
-                tab.remove(lastKey);
-            }
-        }
     }
+
+
 
     /***
      * private internal class that implements HSet.
@@ -536,10 +492,13 @@ public class MapAdapter implements HMap {
                 while (iterk.hasNext()) {
                     a[counter++] = iterk.next();
                 }
+                while(counter < a.length)
+                    a[counter++] = null;
             }
             return a;
         }
     }
+
 
 
     /***
@@ -699,54 +658,63 @@ public class MapAdapter implements HMap {
                     Object obj = iterk.next();
                     a[counter++] = tabv.get(obj);
                 }
+                while(counter < a.length)
+                    a[counter++] = null;
             }
             return a;
         }
 
+
+    }
+
+
+
+    /***
+     * private internal class that implements HIterator.
+     * It is used to give back by the iterator of the class EntrySet an Object of Entry type.
+     */
+    private class IterE implements HIterator {
+
+        private Enumeration enumerk;
+        private boolean hasIterate = false;
+        private HashtableAdaptee tab;
+        private Object lastKey,lastValue;
+
+        private IterE(HashtableAdaptee h) {
+            tab = h;
+            enumerk = tab.keys();
+        }
+
+
+        @Override
+        public boolean hasNext() {
+            return enumerk.hasMoreElements();
+        }
+
         /***
-         * This iterator implements HIterator
+         *
+         * @return the next Entry(key,value)
          */
-        private class Iterv implements HIterator {
-            private Enumeration enumer;
-            private boolean hasIterate = false;
-            private Object lastValue;
-            private Object lastkey;
-            private HashtableAdaptee tabv;
-
-            private Iterv(HashtableAdaptee h) {
-                tabv = h;
-                enumer = h.keys();
+        @Override
+        public Object next() {
+            if (!enumerk.hasMoreElements()) {
+                throw new NoSuchElementException();
             }
+            hasIterate = true;
+            lastKey = enumerk.nextElement();
+            lastValue = tab.get(lastKey);
+            return new Entry(lastKey,lastValue);
+        }
 
-            @Override
-            public boolean hasNext() {
-                return enumer.hasMoreElements();
+        @Override
+        public void remove() {
+            if (!hasIterate) {
+                throw new IllegalStateException();
             }
-
-            /***
-             *
-             * @return the next value
-             */
-            @Override
-            public Object next(){
-                if (!enumer.hasMoreElements()) {
-                    throw new NoSuchElementException();
-                }
-                hasIterate = true;
-                lastkey = enumer.nextElement();
-                lastValue = tabv.get(lastkey);
-                return lastValue;
-            }
-
-            @Override
-            public void remove() {
-                if (!hasIterate) {
-                    throw new IllegalStateException();
-                }
-                tabv.remove(lastkey);
-            }
+            tab.remove(lastKey);
         }
     }
+
 
 
     /***
@@ -790,6 +758,52 @@ public class MapAdapter implements HMap {
                 throw new IllegalStateException();
             }
             tab.remove(lastKey);
+        }
+    }
+
+
+
+    /***
+     * This iterator implements HIterator
+     */
+    private class Iterv implements HIterator {
+        private Enumeration enumer;
+        private boolean hasIterate = false;
+        private Object lastValue;
+        private Object lastkey;
+        private HashtableAdaptee tabv;
+
+        private Iterv(HashtableAdaptee h) {
+            tabv = h;
+            enumer = h.keys();
+        }
+
+        @Override
+        public boolean hasNext() {
+            return enumer.hasMoreElements();
+        }
+
+        /***
+         *
+         * @return the next value
+         */
+        @Override
+        public Object next(){
+            if (!enumer.hasMoreElements()) {
+                throw new NoSuchElementException();
+            }
+            hasIterate = true;
+            lastkey = enumer.nextElement();
+            lastValue = tabv.get(lastkey);
+            return lastValue;
+        }
+
+        @Override
+        public void remove() {
+            if (!hasIterate) {
+                throw new IllegalStateException();
+            }
+            tabv.remove(lastkey);
         }
     }
 }

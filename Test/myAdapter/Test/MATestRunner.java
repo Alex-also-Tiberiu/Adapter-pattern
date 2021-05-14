@@ -11,5 +11,6 @@ public class MATestRunner {
             System.out.println(fail.toString());
 
         System.out.println(result.wasSuccessful());
+        System.out.println(result.getFailures());
     }
 }

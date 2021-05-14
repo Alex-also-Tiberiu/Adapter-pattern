@@ -53,6 +53,10 @@ public class MapAdapterTest {
         map2 = new MapAdapter(12);
         e1 = new MapAdapter.Entry(0,"a");
         e2 = new MapAdapter.Entry(1,"b");
+        assertTrue(map1 != null);
+        assertTrue(map2 != null);
+        assertTrue(e1 != null);
+        assertTrue(e2 != null);
     }
 
     /***
@@ -61,11 +65,16 @@ public class MapAdapterTest {
      */
     @Test
     public void testMapAdapterInit() {
+        assertTrue(map1 != null);
         assertTrue(map1.isEmpty());
         assertTrue(map1.size() == 0);
 
+        assertTrue(map2 != null);
         assertTrue(map2.isEmpty());
         assertTrue(map2.size() == 0);
+
+        assertTrue(e1 != null);
+        assertTrue(e2 != null);
     }
 
     /***
