@@ -325,7 +325,7 @@ public class MapAdapter implements HMap {
             if(a.equals(null))
                 throw new NullPointerException("null array is not allowed");
             if(! (a instanceof Entry[]))
-                throw  new ClassCastException("incompatible type");
+                throw  new ArrayStoreException("incompatible type");
             if(a.length < size())
                 return toArray();
             else {
@@ -375,14 +375,14 @@ public class MapAdapter implements HMap {
 
         @Override
         public boolean contains(Object o) {
-            if(o.equals(null))
+            if(o == null)
                 throw new NullPointerException("null Entry is not allowed");
             return tabk.containsKey(o);
         }
 
         @Override
         public boolean containsAll(HCollection c) {
-            if(c.equals(null))
+            if(c == null)
                 throw new NullPointerException("null collection is not allowed");
             if(! (c instanceof SetKey))
                 throw new ClassCastException("Different HCollection of EntrySet is not allowed");
@@ -398,7 +398,7 @@ public class MapAdapter implements HMap {
 
         @Override
         public boolean equals(Object o) {
-            if (o.equals(null) || !(o instanceof SetKey) || ((SetKey) o).size() != size())
+            if (o == null || !(o instanceof SetKey) || ((SetKey) o).size() != size())
                 return false;
             return containsAll((SetKey)o);
         }
@@ -429,11 +429,11 @@ public class MapAdapter implements HMap {
 
         @Override
         public boolean removeAll(HCollection c) {
-            if(c.equals(null))
+            if(c == null)
                 throw new NullPointerException("null HCollection is not allowed");
-            if(! (c instanceof HSet))
+            if(! (c instanceof SetKey))
                 throw new ClassCastException("incompatible type");
-            HSet es = (HSet) c;
+            SetKey es = (SetKey) c;
             Iterk iterk = (Iterk) es.iterator();
             boolean set = false;
             while(iterk.hasNext()){
@@ -446,13 +446,13 @@ public class MapAdapter implements HMap {
 
         @Override
         public boolean retainAll(HCollection c) {
-            if(c.equals(null))
+            if(c == null)
                 throw new NullPointerException("null HCollection is not allowed");
-            if(! (c instanceof EntrySet))
+            if(! (c instanceof SetKey))
                 throw new ClassCastException("incompatible type");
             if(c.isEmpty())
                 return false;
-            EntrySet es = (EntrySet) c;
+            SetKey es = (SetKey) c;
             Iterk iterk = (Iterk) es.iterator();
             boolean set = false;
             HashtableAdaptee newTAb = new HashtableAdaptee(c.size());
@@ -463,6 +463,7 @@ public class MapAdapter implements HMap {
                 set = true;
             }
             tabk = newTAb;
+            table = tabk;
             return set;
         }
 
@@ -482,7 +483,7 @@ public class MapAdapter implements HMap {
 
         @Override
         public Object[] toArray(Object[] a) {
-            if(a.equals(null))
+            if(a == null)
                 throw new NullPointerException("null array is not allowed");
             if(a.length < size())
                 return toArray();
@@ -527,13 +528,13 @@ public class MapAdapter implements HMap {
 
         @Override
         public boolean contains(Object o) {
-            if(o.equals(null))
+            if(o == null)
                 throw new NullPointerException("null value is not allowed");
             return tabv.contains(o);
         }
         @Override
         public boolean containsAll(HCollection c) {
-            if(c.equals(null))
+            if(c == null)
                 throw new NullPointerException("null collection is not allowed");
             if(! (c instanceof SetValue))
                 throw new ClassCastException("incompatible type introduced");
@@ -549,7 +550,7 @@ public class MapAdapter implements HMap {
 
         @Override
         public boolean equals(Object o) {
-            if (o.equals(null) || !(o instanceof SetValue) || ((SetValue) o).size() != size())
+            if ( !(o instanceof SetValue) || o == null || ((SetValue) o).size() != size())
                 return false;
             return containsAll((SetValue)o);
         }
@@ -570,18 +571,20 @@ public class MapAdapter implements HMap {
         @Override
         public HIterator iterator() { return new Iterv(tabv); }
 
+        private HIterator iteratork() { return new Iterk(tabv); }
+
         @Override
         public boolean remove(Object o) {
-            if(o.equals(null))
+            if(o == null)
                 throw new NullPointerException("null element is not allowed");
             boolean set = contains(o);
             if(set) {
-                Iterk iterk = (Iterk) iterator();
+                Iterv iter = (Iterv) iterator();
                 Object obj;
-                while (iterk.hasNext()) {
-                    obj = iterk.next();
-                    if (tabv.get(obj).equals(o)) {
-                        tabv.remove(obj);
+                while (iter.hasNext()) {
+                    obj = iter.next();
+                    if (obj.equals(o)) {
+                        iter.remove();
                         set = true;
                     }
                 }
@@ -591,7 +594,7 @@ public class MapAdapter implements HMap {
 
         @Override
         public boolean removeAll(HCollection c) {
-            if(c.equals(null))
+            if(c == null)
             throw new NullPointerException("null HCollection is not allowed");
             if(! (c instanceof SetValue))
                 throw new ClassCastException("incompatible type");
@@ -610,25 +613,28 @@ public class MapAdapter implements HMap {
 
         @Override
         public boolean retainAll(HCollection c) {
-            if(c.equals(null))
+            if(c == null)
             throw new NullPointerException("null HCollection is not allowed");
             if(! (c instanceof SetValue))
                 throw new ClassCastException("incompatible type");
             if(c.isEmpty())
                 return false;
             SetValue sv = (SetValue) c;
-            Iterk iterk = (Iterk) sv.iterator();
+            Iterv iter;
+            if(c.size() > size())
+                iter = (Iterv) sv.iterator();
+            else
+                iter = (Iterv) iterator();
             boolean set = false;
-            HashtableAdaptee newTAb = new HashtableAdaptee(c.size());
-            while(iterk.hasNext()){
-                Object obj1 = iterk.next();
-                Object obj2 = tabv.get(obj1);
-                if(contains(obj2))
-                    newTAb.put(obj1,obj2);
-                set = true;
+            while(iter.hasNext()){
+                Object val = iter.next();
+                if(!contains(val)) {
+                    remove(val);
+                    set = true;
+                }
             }
-            tabv = newTAb;
-            return set; }
+            return set;
+        }
 
         @Override
         public int size() { return tabv.size();}

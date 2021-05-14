@@ -1,7 +1,6 @@
 package myAdapter.Test;
 import myAdapter.*;
 import myAdapter.UnsupportedOperationException;
-import org.junit.After;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
@@ -39,14 +38,14 @@ public class EntrySetTest {
     private HSet es2;
 
     /***
-     * This method instantiates MapAdapter and after instantiates an HSet object of EntrySet nature. <br>
-     * It also instantiates a MapAdapter and an HSet of EntrySet nature that already has elements inside. <br>
-     * Instantiation of these objects occurs before all test class methods.
-     */
-    /***
      * <b>Test : </b> <br>
-     * <b>Description : </b> <br>
-     * <b>Pre-condition : </b> <br>
+     * <b>Description : </b> This method instantiates MapAdapter m1 and after instantiates an HSet object of EntrySet nature es1. <br>
+     * It also instantiates a MapAdapter m2 with some additional elements inside, and a HSet of EntrySet nature es2 that has the elements of ms2. <br>
+     * Instantiation of these objects occurs before all test class methods. <br>
+     * It is also checked that all the object instantiated have not a reference to null.
+     *  es1 = m1 = {  } <br>
+     *  es2 = m2 = { [0,a] , [1,b] , [2,c] , [3,d] } <br>
+     * <b>Pre-condition : </b> the sample variables have been created without being instantiated <br>
      * <b>Post-condition : </b> <br>
      * <b>Expected result : </b> <br>
      */
@@ -66,17 +65,18 @@ public class EntrySetTest {
         assertTrue(es2!= null);
     }
 
+
     /***
-     * This method tests the right initialization of EntrySet after setup() method. <br>
-     * The EntrySet es1 and es2 are implemented with different size, and it is verified by the method size() of HSet.<br>
-     * Execution Record : true.
-     */
-    /***
-     * <b>Test : </b> <br>
-     * <b>Description : </b> <br>
-     * <b>Pre-condition : </b> <br>
-     * <b>Post-condition : </b> <br>
-     * <b>Expected result : </b> <br>
+     * <b>Test : </b>  This method tests the right initialization of EntrySet after setup() method. <br>
+     * <b>Description : </b> The EntrySet es1 and es2 are implemented with different size, and it is verified by the method size() of HSet. <br>
+     * Also it is verified that the EntrySet es1, es2 and MapAdapter m1 and m2 have not a reference to null. <br>
+     * Finally it is verified the size of each elements and the fact that one EntrySet is empty and the over one is not Empty. <br>
+     * <b>Pre-condition : </b> Two MapAdapter objects properly initialized, m1 is empty and m2 has 4 elements.<br>
+     * EntrySet es2 object properly initialized on the MapAdapter m2 object.<br>
+     *      es1 = m1 = {  } <br>
+     *      es2 = m2 = { [0,a] , [1,b] , [2,c] , [3,d] } <br>
+     * <b>Post-condition : </b> The objects are proper initialized. <br>
+     * <b>Expected result : </b> The objects have not a reference to null <br>
      */
     @Test
     public void testEntrySetInitialization() {
@@ -90,36 +90,27 @@ public class EntrySetTest {
         assertFalse(es2.isEmpty());
     }
 
-    /***
-     * This method tests the HSet.add() method.<br>
-     * in any case this method must throw UnsupportedOperationException.<br>
-     *  <b>Post-condition : </b> the exception to the calling method is passed, if this is not handled then the program ends. <br>
-     * Execution Record : true.
-     */
-    /***
-     * <b>Test : </b> <br>
-     * <b>Description : </b> <br>
-     * <b>Pre-condition : </b> <br>
-     * <b>Post-condition : </b> <br>
-     * <b>Expected result : </b> <br>
+     /***
+     * <b>Test : </b> the wrong functioning of HSet.add() method. <br>
+     * <b>Description : </b> In any case this method must throw UnsupportedOperationException. <br>
+     * <b>Pre-condition : </b> Two MapAdapter objects properly initialized, m1 is empty and m2 has 4 elements.<br>
+     * EntrySet es2 object properly initialized on the MapAdapter m2 object. <br>
+     * <b>Post-condition : </b> the exception to the calling method is passed, if this is not handled then the program ends. <br>
+     * <b>Expected result : </b>  UnsupportedOperationException thrown <br>
      */
     @Test (expected = UnsupportedOperationException.class)
     public void add() {
         es1.add("a");
     }
 
+
     /***
-     * This method tests the HSet.addAll() method.<br>
-     * In any case this method must throw UnsupportedOperationException.<br>
-     *  <b>Post-condition : </b> the exception to the calling method is passed, if this is not handled then the program ends. <br>
-     * Execution Record : true.
-     */
-    /***
-     * <b>Test : </b> <br>
-     * <b>Description : </b> <br>
-     * <b>Pre-condition : </b> <br>
-     * <b>Post-condition : </b> <br>
-     * <b>Expected result : </b> <br>
+     * <b>Test : </b> the wrong functioning of HSet.adAll() method. <br>
+     * <b>Description : </b> In any case this method must throw UnsupportedOperationException. <br>
+     * <b>Pre-condition : </b> Two MapAdapter objects properly initialized, m1 is empty and m2 has 4 elements.<br>
+     * EntrySet es2 object properly initialized on the MapAdapter m2 object. <br>
+     * <b>Post-condition : </b> the exception to the calling method is passed, if this is not handled then the program ends. <br>
+     * <b>Expected result : </b>  UnsupportedOperationException thrown <br>
      */
     @Test (expected = UnsupportedOperationException.class)
     public void addAll() {
@@ -127,36 +118,37 @@ public class EntrySetTest {
     }
 
     /***
-     * This method tests the HSet.clear() method. <br>
-     * The size of EntrySet2 is checked and it is 4, then a clear() is made on it and finally it is checked that his size is 0.<br>
-     * Execution Record : true.
-     */
-    /***
-     * <b>Test : </b> <br>
-     * <b>Description : </b> <br>
-     * <b>Pre-condition : </b> <br>
-     * <b>Post-condition : </b> <br>
-     * <b>Expected result : </b> <br>
+     * <b>Test : </b> This method tests the HSet.clear() method. <br>
+     * <b>Description : </b> The size of EntrySet2 is checked and it is 4, then a clear() is made on it and finally it is checked that his size is 0. <br>
+     * At the same time it is verified that the MapAdapter m1 size change as the size of EntrySet2 es1. <br>
+     * <b>Pre-condition : </b> Two MapAdapter objects properly initialized, m1 is empty and m2 has 4 elements.<br>
+     * EntrySet es2 object properly initialized on the MapAdapter m2 object.<br>
+     *      es1 = m1 = {  } <br>
+     *      es2 = m2 = { [0,a] , [1,b] , [2,c] , [3,d] } <br>
+     *          Backing works. <br> <br>
+     * <b>Post-condition : </b> The EntrySet is clear. <br>
+     * <b>Expected result : </b> clear erase the elements of the EntrySet. <br>
      */
     @Test
     public void clear() {
         assertTrue(es2.size() == 4);
+        assertTrue(m2.size() == 4);
         es2.clear();
         assertTrue(es2.size() == 0);
+        assertTrue(m2.size() == 0);
     }
 
     /***
-     * This method tests the HSet.contains() method. <br>
-     * 3 Entry are created which through the contains() method are verified of their presence in EntrySet. <br>
+     * <b>Test : </b> This method tests the HSet.contains() method. <br>
+     * <b>Description : </b> 3 Entry are created which through the contains() method are verified of their presence in EntrySet. <br>
      * 1 Entry is already present and is verified, while the other two are Entries that were not introduced initially and therefore were not found. <br>
-     * Execution Record : true.
-     */
-    /***
-     * <b>Test : </b> <br>
-     * <b>Description : </b> <br>
-     * <b>Pre-condition : </b> <br>
-     * <b>Post-condition : </b> <br>
-     * <b>Expected result : </b> <br>
+     * <b>Pre-condition : </b> Two MapAdapter objects properly initialized, m1 is empty and m2 has 4 elements.<br>
+     * EntrySet es2 object properly initialized on the MapAdapter m2 object.<br>
+     *      es1 = m1 = {  } <br>
+     *      es2 = m2 = { [0,a] , [1,b] , [2,c] , [3,d] } <br>
+     *          Backing works. <br> <br>
+     * <b>Post-condition : </b> the objects don't change their state after contains is called. <br>
+     * <b>Expected result : </b> contains return true if an object is contained or false if not. <br>
      */
     @Test
     public void contains() {
@@ -169,17 +161,12 @@ public class EntrySetTest {
     }
 
     /***
-     * This method tests the HSet.contains() method. <br>
-     * In this case is expected that the method throws a NullPointerException because in the method contains() was introduced a null parameter. <br>
-     *  <b>Post-condition : </b> the exception to the calling method is passed, if this is not handled then the program ends. <br>
-     * Execution Record : true.
-     */
-    /***
-     * <b>Test : </b> <br>
-     * <b>Description : </b> <br>
-     * <b>Pre-condition : </b> <br>
-     * <b>Post-condition : </b> <br>
-     * <b>Expected result : </b> <br>
+     * <b>Test : </b> the wrong functioning of HSet.contains() method. <br>
+     * <b>Description : </b> In this case is expected that the method throws a NullPointerException because in the method contains() was introduced a null parameter. <br>
+     * <b>Pre-condition : </b> Two MapAdapter objects properly initialized, m1 is empty and m2 has 4 elements.<br>
+     * EntrySet es2 object properly initialized on the MapAdapter m2 object. <br>
+     * <b>Post-condition : </b>  the exception to the calling method is passed, if this is not handled then the program ends. <br>
+     * <b>Expected result : </b> NullPointerException thrown. <br>
      */
     @Test (expected = NullPointerException.class)
     public void contains_Null() {
@@ -187,39 +174,34 @@ public class EntrySetTest {
     }
 
     /***
-     * This method tests the HSet.contains() method. <br>
-     * In this case is expected that the method throws a ClassCastException because in the method contains()
+     * <b>Test : </b> the wrong functioning of HSet.contains() method. <br>
+     * <b>Description : </b> In this case is expected that the method throws a ClassCastException because in the method contains()
      * has been introduced a different class from Entry as a parameter. <br>
-     *  <b>Post-condition : </b> the exception to the calling method is passed, if this is not handled then the program ends. <br>
-     * Execution Record : true.
-     */
-    /***
-     * <b>Test : </b> <br>
-     * <b>Description : </b> <br>
-     * <b>Pre-condition : </b> <br>
-     * <b>Post-condition : </b> <br>
-     * <b>Expected result : </b> <br>
+     * <b>Pre-condition : </b>  Two MapAdapter objects properly initialized, m1 is empty and m2 has 4 elements.<br>
+     * EntrySet es2 object properly initialized on the MapAdapter m2 object. <br>
+     * <b>Post-condition : </b> the exception to the calling method is passed, if this is not handled then the program ends. <br>
+     * <b>Expected result : </b> ClassCastException thrown. <br>
      */
     @Test (expected = ClassCastException.class)
     public void contains_ADifferentObject() {
         es1.contains(new java.util.Vector());
     }
 
+
     /***
-     * This method tests the HSet.containsAll() method. <br>
-     * 3 pairs are added to MapAdapter1, EntrySet1 size is checked, and EntrySet2 is compared symmetrically with EntrySet1. <br>
+     * <b>Test : </b> this method tests the HSet.containsAll() method. <br>
+     * <b>Description : </b> 3 pairs are added to MapAdapter1, EntrySet1 size is checked, and EntrySet2 is compared symmetrically with EntrySet1. <br>
      * Finally it was added a fourth pair in EntrySet2 from obtain 4 identical elements in both EntrySets,
      * it check the size of EntrySet2 and then the two EntrySets are symmetrically equal .<br>
      * It has not been possible to check if the containsAll() method launches ClassCastException,
      * because the code does not compile if a class different from that indicated by the interface is introduced.<br>
-     * Execution Record : true.
-     */
-    /***
-     * <b>Test : </b> <br>
-     * <b>Description : </b> <br>
-     * <b>Pre-condition : </b> <br>
-     * <b>Post-condition : </b> <br>
-     * <b>Expected result : </b> <br>
+     * <b>Pre-condition : </b> Two MapAdapter objects properly initialized, m1 is empty and m2 has 4 elements.<br>
+     * EntrySet es2 object properly initialized on the MapAdapter m2 object.<br>
+     *      es1 = m1 = {  } <br>
+     *      es2 = m2 = { [0,a] , [1,b] , [2,c] , [3,d] } <br>
+     *          Backing works. <br>
+     * <b>Post-condition : </b> the state of the Objects don't change. <br>
+     * <b>Expected result : </b> the containsAll() find if a collection is contained or not. <br>
      */
     @Test
     public void containsAll() {
@@ -236,18 +218,12 @@ public class EntrySetTest {
     }
 
     /***
-     * This method tests the HSet.containsAll() method. <br>
-     * In this case is expected that the method throws a NullPointerException because in the method containsAll()
+     * <b>Test : </b> This method tests the HSet.containsAll() method. <br>
+     * <b>Description : </b> insert a null parameter on the remove method applied to an Entryset. <br>
+     * <b>Pre-condition : </b> In this case is expected that the method throws a NullPointerException because in the method containsAll()
      * has been introduce a null parameter. <br>
-     *  <b>Post-condition : </b> the exception to the calling method is passed, if this is not handled then the program ends. <br>
-     * Execution Record : true.
-     */
-    /***
-     * <b>Test : </b> <br>
-     * <b>Description : </b> <br>
-     * <b>Pre-condition : </b> <br>
-     * <b>Post-condition : </b> <br>
-     * <b>Expected result : </b> <br>
+     * <b>Post-condition : </b> the exception to the calling method is passed, if this is not handled then the program ends. <br>
+     * <b>Expected result : </b> NullPointerException thrown.  <br>
      */
     @Test (expected = NullPointerException.class)
     public void containsAll_Null(){
@@ -255,18 +231,17 @@ public class EntrySetTest {
     }
 
     /***
-     * This method tests the HSet.equals() method. <br>
-     * Entryset1 is initially compared to Entryset2 which is false because one is empty and the other has 4 elements,
+     * <b>Test : </b> This method tests the HSet.equals() method. <br>
+     * <b>Description : </b> Entryset1 is initially compared to Entryset2 which is false because one is empty and the other has 4 elements,
      * then to Entryset1 adding to the Mapadapter1 the elements of Mapadapter2 are added the pairs present in Mapadapter2.
      * Finally, Entryset1 and Entryset2 are symmetrically compared.<br>
-     * Execution Record : true.
-     */
-    /***
-     * <b>Test : </b> <br>
-     * <b>Description : </b> <br>
-     * <b>Pre-condition : </b> <br>
-     * <b>Post-condition : </b> <br>
-     * <b>Expected result : </b> <br>
+     * <b>Pre-condition : </b>  Two MapAdapter objects properly initialized, m1 is empty and m2 has 4 elements.<br>
+     * EntrySet es2 object properly initialized on the MapAdapter m2 object.<br>
+     *      es1 = m1 = {  } <br>
+     *      es2 = m2 = { [0,a] , [1,b] , [2,c] , [3,d] } <br>
+     *          Backing works. <br>
+     * <b>Post-condition : </b> the objects don't change their status if equals() is called. <br>
+     * <b>Expected result : </b> equals return true with two EntrySet that they are the same elements. <br>
      */
     @Test
     public void equals() {
@@ -277,37 +252,26 @@ public class EntrySetTest {
     }
 
     /***
-     * This method tests the HSet.equals() method. <br>
-     * The method returns false because a null parameter has been introduced.<br>
-     * Execution Record : true.
-     */
-    /***
-     * <b>Test : </b> <br>
-     * <b>Description : </b> <br>
-     * <b>Pre-condition : </b> <br>
-     * <b>Post-condition : </b> <br>
-     * <b>Expected result : </b> <br>
+     * <b>Test : </b> the wrong functioning of Hset.equals on a EntrySet. <br>
+     * <b>Description : </b> The method returns false because a null parameter has been introduced. <br>
+     * <b>Pre-condition : </b> Two MapAdapter objects properly initialized, m1 is empty and m2 has 4 elements.<br>
+     * EntrySet es2 object properly initialized on the MapAdapter m2 object.<br>
+     * <b>Post-condition : </b> the state of the EntrySet don't change if equals() is called. <br>
+     * <b>Expected result : </b> equals return false <br>
      */
     @Test
     public void equalsToNull() {
         assertFalse(es1.equals(null));
     }
 
+
     /***
-     * This method tests the HSet.equals() method. <br>
-     * The method returns false because a different class from EntrySet has been introduced as a parameter.<br>
-     * Execution Record : true.
-     */
-    /***
-     * <b>Test : </b> This method tests the <br>
-     * <b>Description : </b> <br>
-     * <b>Pre-condition : </b> </b> Two MapAdapter objects properly initialized, m1 is empty and m2 has 4 elements.<br>
+     * <b>Test : </b> This method tests the wrong functioning of HSet.equals on a EntrySet. <br>
+     * <b>Description : </b> The method returns false because a different class from EntrySet has been introduced as a parameter.<br> <br>
+     * <b>Pre-condition : </b> Two MapAdapter objects properly initialized, m1 is empty and m2 has 4 elements.<br>
      * EntrySet es2 object properly initialized on the MapAdapter m2 object.<br>
-     * HIterator objects and h2 properly initialized on the EntrySet es2 object.<br>
-     *      es2 = m2 = { [0,a] , [1,b] , [2,c] , [3,d] } <br>
-     *          Backing works. <br>
-     * <b>Post-condition : </b> <br>
-     * <b>Expected result : </b> <br>
+     * <b>Post-condition : </b> the state of the object don't change if equals() is called. <br>
+     * <b>Expected result : </b> equals return false. <br>
      */
     @Test
     public void equalsToAnotheTypeOfObject() {
@@ -321,8 +285,8 @@ public class EntrySetTest {
      * At the end it was added an element to one of the two maps to verify that the hashCodes are different.<br><br>
      * <b>Pre-condition : </b> Two MapAdapter objects properly initialized, m1 is empty and m2 has 4 elements.<br>
      * EntrySet es2 object properly initialized on the MapAdapter m2 object.<br>
-     * HIterator objects and h2 properly initialized on the EntrySet es2 object.<br>
-     *      es2 = m2 = { [0,a] , [1,b] , [2,c] , [3,d] } <br>
+     *     es1 = m1 = {  } <br>
+     *     es2 = m2 = { [0,a] , [1,b] , [2,c] , [3,d] } <br>
      *          Backing works. <br>
      * <b>Post-condition : </b> the hashcode remain the same if the EntrySets don't change. <br>
      * <b>Expected result : </b> Two hashcode match if two EntrySet have the same elements. <br>
@@ -341,7 +305,7 @@ public class EntrySetTest {
      * <b>Description : </b> It is verified that Entryset1 is empty and Entryset2 is not empty, Entryset2 is cleared and it is verified that it is empty. <br>
      * <b>Pre-condition : </b> Two MapAdapter objects properly initialized, m1 is empty and m2 has 4 elements.<br>
      * EntrySet es2 object properly initialized on the MapAdapter m2 object.<br>
-     * HIterator objects and h2 properly initialized on the EntrySet es2 object.<br>
+     *      es1 = m1 = {  } <br>
      *      es2 = m2 = { [0,a] , [1,b] , [2,c] , [3,d] } <br>
      *          Backing works. <br>
      * <b>Post-condition : </b> The EntrySet1 and EntrySet 2 remain empty after this check. <br>
@@ -399,6 +363,7 @@ public class EntrySetTest {
      * <b>Pre-condition : </b> Two MapAdapter objects properly initialized, m1 is empty and m2 has 4 elements.<br>
      * EntrySet es2 object properly initialized on the MapAdapter m2 object.<br>
      * HIterator objects and h2 properly initialized on the EntrySet es2 object.<br>
+     *      es1 = m1 = {  } <br>
      *      es2 = m2 = { [0,a] , [1,b] , [2,c] , [3,d] } <br>
      *          Backing works. <br>
      * <b>Post-condition : </b> The iterator don't change the elements in the MapAdapter m2 and the EntrySet es2. <br>
@@ -425,6 +390,7 @@ public class EntrySetTest {
      * EntrySet es2 object properly initialized on the MapAdapter m2 object.<br>
      * HIterator objects and h2 properly initialized on the EntrySet es2 object.<br>
      * The HIterator must call next() before to remove the element that next() found.<br>
+     *      es1 = m1 = {  } <br>
      *      es2 = m2 = { [0,a] , [1,b] , [2,c] , [3,d] } <br>
      *          Backing works. <br>
      * <b>Post-condition : </b> The EntrySet es2 and the MapAdapter m2 are empty and their size is 0. <br>
@@ -458,6 +424,7 @@ public class EntrySetTest {
      * Finally an element is removed that is not present in the Entryset, therefore this removals is not true. <br>
      * <b>Pre-condition : </b>  It was instantiated correctly a Mapadapter m2 with 4 elements and from this an Entryset es2
      * was initialized correctly with the same 4 elements. <br>
+     *      es1 = m1 = {  } <br>
      *      es2 = m2 = { [0,a] , [1,b] , [2,c] , [3,d] } <br>
      *          Backing works.
      * <b>Post-condition :</b> the EntrySet size is 0 and it's empty. <br>
@@ -706,9 +673,9 @@ public class EntrySetTest {
      * <b>Pre-condition : </b> Two MapAdapter objects properly initialized, m1 is empty and m2 has 4 elements.<br>
      * EntrySet es1 and es2 object are properly initialized on the MapAdapter m1 and m2 object. <br>
      * <b>Post-condition : </b> the exception is passed to the calling method , if this is not handled then the program ends. <br>
-     * <b>Expected result : </b> ClassCastException thrown. <br>
+     * <b>Expected result : </b> ArrayStoreException thrown. <br>
      */
-    @Test (expected = ClassCastException.class)
+    @Test (expected = ArrayStoreException.class)
     public void toArrayClassCastException() {
         es2.toArray(new java.lang.String[10]);
     }
