@@ -571,8 +571,6 @@ public class MapAdapter implements HMap {
         @Override
         public HIterator iterator() { return new Iterv(tabv); }
 
-        private HIterator iteratork() { return new Iterk(tabv); }
-
         @Override
         public boolean remove(Object o) {
             if(o == null)
@@ -620,11 +618,7 @@ public class MapAdapter implements HMap {
             if(c.isEmpty())
                 return false;
             SetValue sv = (SetValue) c;
-            Iterv iter;
-            if(c.size() > size())
-                iter = (Iterv) sv.iterator();
-            else
-                iter = (Iterv) iterator();
+            Iterv iter = (Iterv) sv.iterator();
             boolean set = false;
             while(iter.hasNext()){
                 Object val = iter.next();
@@ -642,11 +636,11 @@ public class MapAdapter implements HMap {
         @Override
         public Object[] toArray() {
             Object[] array = new Object[tabv.size()];
-            Iterk iterk = (Iterk) iterator();
+            Iterv iter = (Iterv) iterator();
             int counter = 0;
-            while (iterk.hasNext()){
-                Object obj = iterk.next();
-                array[counter++] = tabv.get(obj);
+            while (iter.hasNext()){
+                Object obj = iter.next();
+                array[counter++] = obj;
             }
             return array;
         }
@@ -658,11 +652,11 @@ public class MapAdapter implements HMap {
             if (a.length < size())
                 return toArray();
             else {
-                Iterk iterk = (Iterk) iterator();
+                Iterv iter = (Iterv) iterator();
                 int counter = 0;
-                while (iterk.hasNext()) {
-                    Object obj = iterk.next();
-                    a[counter++] = tabv.get(obj);
+                while (iter.hasNext()) {
+                    Object obj = iter.next();
+                    a[counter++] = obj;
                 }
                 while(counter < a.length)
                     a[counter++] = null;

@@ -623,10 +623,10 @@ public class CollectionValuesTest{
      */
     @Test
     public void toArray() {
-        Object[] keys =  cv2.toArray();
-        assertEquals(cv2.size(),keys.length);
+        Object[] values =  cv2.toArray();
+        assertEquals(cv2.size(),values.length);
         for(int i = 0; i < cv2.size(); i++) {
-            assertTrue(cv2.contains(keys[i]));
+            assertTrue(cv2.contains(values[i]));
         }
     }
 
@@ -648,20 +648,21 @@ public class CollectionValuesTest{
      */
     @Test
     public void toArray2(){
-        m1.put(2,"bratan");
-        m1.put(12,"patzan");
-        Object[] keys1 = cv1.toArray();
-        assertEquals(cv1.size(),keys1.length);
-        for(int i = 0 ; i < cv1.size(); i++)
-            assertTrue(cv1.contains(keys1[i]));
-
-        Object[] keys2 = cv2.toArray(keys1);
-        assertEquals(cv2.size(),keys2.length);
+        m1.put(10,"bratan");
+        m1.put(22,"patzan");
+        Object[] values1 = cv1.toArray();
+        assertEquals(cv1.size(),values1.length);
+        for(int i = 0 ; i < cv1.size(); i++) {
+            System.out.println(values1[i]);
+            assertTrue(cv1.contains(values1[i]));
+        }
+        Object[] values2 = cv2.toArray(values1);
+        assertEquals(cv2.size(),values2.length);
         for(int i = 0; i < cv2.size(); i++)
-            assertTrue(cv2.contains(keys2[i]));
+            assertTrue(cv2.contains(values2[i]));
 
-        Object[] keys3 = new Object[10];
-        keys3 = cv2.toArray(keys3);
+        Object[] values3 = new Object[10];
+        values3 = cv2.toArray(values3);
     }
 
     /***
