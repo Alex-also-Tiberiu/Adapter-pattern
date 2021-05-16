@@ -3,7 +3,11 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 
-public class LATestRunner {
+/***
+ * This class performs ListAdapterTest class tests. <br>
+ * @see ListAdapterTest ListAdapterTest. <br>
+ */
+public class ListAdapterTestRunner {
     public static void main(String[] args) {
         Result result = JUnitCore.runClasses(ListAdapterTest.class);
 

@@ -13,8 +13,9 @@ import static org.junit.Assert.*;
  * This class use two MapAdapter variables and two MapAdapter.Entry variables which are implemented before all the test will start with the method setup(). <br>
  * I used this design because first of all we need at least one MapAdapter to execute all the tests.<br>
  * All the methods are described to give a full view of what was done, each one can also represent a different behavior of MapAdapter.<br>
- * All the Execution Records are obtained by the execution of MATestRunner.
- * @see MATestRunner MATestRunner
+ * All the Execution Records are obtained by the execution of MATestRunner.<br>
+ * Execution record : true . <br>
+ * @see MapAdapterTestRunner MapAdapterTestRunner
  * @see EntrySetTest EntrySetTest
  * @see SetKeyTest SetKeyTest
  * @see CollectionValuesTest CollectionValueTest
@@ -38,14 +39,15 @@ public class MapAdapterTest {
     public MapAdapter.Entry e2;
 
     /***
-     * This method is executed before all the tests in this class. <br>
-     * This method create an instance of MapAdapter with a default capacity, and another MapAdapter with an initial capacity introduced as a parameter.<br>
+     * <b>Before : </b> This method is executed before all the tests in this class.<br>
+     * <b>Description : </b> This method create an instance of MapAdapter with a default capacity, and another MapAdapter with an initial capacity introduced as a parameter.<br>
      * In the end create two different instance of MapAdapter.Entry.<br>
      * After the execution of this method here will be present two MapAdapter that can be used by all the test cases.<br>
-     * Execution Record: initializationError(myAdapter.Test.MapAdapterTest): Invalid test class 'myAdapter.Test.MapAdapterTest':
-     *   1. <br>
-     * the execution record was obtained after the implementation of all other the tests.<br>
-     *
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b>the instance variable have not a reference to null. <br>
+     * <b>Expected result : </b> the instance variable have been instantiated correctly . <br>
      */
     @Before
     public void setup() {
@@ -59,9 +61,16 @@ public class MapAdapterTest {
         assertTrue(e2 != null);
     }
 
+
     /***
-     * This method tests the right initialization of MapAdapter after the setup() method. <br>
-     * The MapAdapter are initialized with different size, but they must be empty and both size must be 0.<br>
+     * <b>Test : </b> the right initialization of MapAdapter after the setup() method.<br>
+     * <b>Description : </b> the mapAdapter end the entry object have not a reference to null <br>
+     * The MapAdapter are initialized with different size, but they must be empty and both size must be 0.<br><br>
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> the instance variable have not a reference to null. <br>
+     * <b>Expected result : </b> the instance variable have not a reference to null. <br>
      */
     @Test
     public void testMapAdapterInit() {
@@ -78,10 +87,15 @@ public class MapAdapterTest {
     }
 
     /***
-     * This method tests the right initialization of MapAdapter.Entry after the setup() method.<br>
+     * <b>Test : </b> the proper initialization of the MapAdapter.Entry() constructor<br>
+     * <b>Description : </b> This method tests the right initialization of MapAdapter.Entry after the setup() method.<br>
      * The Entry objects are initialized with different parameters, and after the execution of this method the values introduced by the constructor,
      * must be the same returned by the getter methods.<br>
-     * Execution Record : true.
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> Entry is initialized correctly. <br>
+     * <b>Expected result : </b> Entry is initialized correctly.<br>
      */
     @Test
     public void testEntryInit() {
@@ -93,9 +107,14 @@ public class MapAdapterTest {
 
 
     /***
-     * This method tests the wrong initialization of MapAdapter.<br>
+     * <b>Test : </b> the wrong initialization of the constructor. <br>
+     * <b>Description : </b> This method tests the wrong initialization of MapAdapter.<br>
      * It was introduced a negative index to generate a MapAdapter object, the execution of this method expects IndexOutOfBoundsException to be thrown.<br>
-     * Execution Record : true.
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> the exception is passed to the calling method , if this is not handled then the program ends. <br>
+     * <b>Expected result : </b> IndexOutOfBoundsException thrown. <br>
      */
     @Test (expected = IndexOutOfBoundsException.class)
     public void testInvalidCapacity() {
@@ -103,9 +122,14 @@ public class MapAdapterTest {
     }
 
     /***
-     * This method tests the wrong initialization of MapAdapter.Entry.<br>
+     * <b>Test : </b> the wrong functioning of MapAdapter.Entry() constructor. <br>
+     * <b>Description : </b> This method tests the wrong initialization of MapAdapter.Entry.<br>
      * It was introduce a null key in the MapAdapter.Entry object, the execution of this method expects NullPointerException.<br>
-     * Execution Record : true.
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> the exception is passed to the calling method , if this is not handled then the program ends. <br>
+     * <b>Expected result : </b> NullPointerException thrown <br>
      */
     @Test (expected = NullPointerException.class)
     public void testEntryNullKey() {
@@ -113,21 +137,31 @@ public class MapAdapterTest {
     }
 
     /***
-     * This method tests the wrong initialization of MapAdapter.Entry.<br>
+     * <b>Test : </b> the wrong functioning of MapAdapter.Entry() constructor. <br>
+     * <b>Description : </b>  This method tests the wrong initialization of MapAdapter.Entry.<br>
      * It was introduce a null value in the MapAdapter.Entry object, the execution of this method expects NullPointerException.<br>
-     * Execution Record : true.
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> the exception is passed to the calling method , if this is not handled then the program ends. <br>
+     * <b>Expected result : </b> NullPointerException thrown. <br>
      */
     @Test (expected = NullPointerException.class)
     public void testEntryNullValue() {
         e1 = new MapAdapter.Entry(0,null);
     }
 
+
     /***
-     * This method test the proper functioning of clear().<br>
-     * At the beginning the MapAdapter is empty, after that it was introduced two elements.<br>
+     * <b>Test : </b> the proper functioning of clear() method. <br>
+     * <b>Description : </b>  At the beginning the MapAdapter is empty, after that it was introduced two elements.<br>
      * The size of the MapAdapter was verified at two, after that it was used clear and the size of MapAdapter was verified at 0.<br>
      * The post condition is that the map has no elements and it's empty.<br>
-     * Execution Record : true.
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> the map is clear <br>
+     * <b>Expected result : </b> the map is clear <br>
      */
     @Test
     public void clear(){
@@ -143,10 +177,14 @@ public class MapAdapterTest {
     }
 
     /***
-     * This method test the proper functioning of containsKey().<br>
-     * At the beginning it was inserted new elements in the MapAdapter, after with the containsKey() it checks if the inserted keys are present in the map.<br>
+     * <b>Test : </b> the proper functioning of containsKey() method. <br>
+     * <b>Description : </b> At the beginning it was inserted new elements in the MapAdapter, after with the containsKey() it checks if the inserted keys are present in the map.<br>
      * It also denies the presence of keys that have not been introduced.<br>
-     * Execution Record : true.
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> the key should be different if the map change. <br>
+     * <b>Expected result : </b> the map recognize the keys. <br>
      */
     @Test
     public void containsKey() {
@@ -160,9 +198,13 @@ public class MapAdapterTest {
     }
 
     /***
-     * this method tests the wrong functioning of containsKey().<br>
-     * It was called containsKey() with a null parameter, the method is expected to throw a NullPointerException exception.<br>
-     * Execution Record : true.
+     * <b>Test : </b> the wrong functioning of containsKey() method. <br>
+     * <b>Description : </b> It was called containsKey() with a null parameter, the method is expected to throw a NullPointerException exception.<br>
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> the exception is passed to the calling method , if this is not handled then the program ends. <br>
+     * <b>Expected result : </b> NullPointerException thrown <br>
      */
     @Test (expected = NullPointerException.class)
     public void containsNullKey() {
@@ -170,10 +212,14 @@ public class MapAdapterTest {
     }
 
     /***
-     * This method tests the proper functioning of containsValue().<br>
-     * At the beginning three pairs of key and value have been inserted, after through the method containsValue() the presence of the values inserted previously is verified.<br>
+     * <b>Test : </b> the proper functioning of containsValue() method. <br>
+     * <b>Description : </b> At the beginning three pairs of key and value have been inserted, after through the method containsValue() the presence of the values inserted previously is verified.<br>
      * It also denies the presence of keys that have not been introduced.<br>
-     * Execution Record : true.
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> the value searched may be not contained if the map change. <br>
+     * <b>Expected result : </b> the map recognize the value inside. <br>
      */
     @Test
     public void containsValue() {
@@ -187,9 +233,13 @@ public class MapAdapterTest {
     }
 
     /***
-     * This method tests the wrong functioning of containsValue().<br>
-     * It was called containsValue() with a null parameter, the method is expected to throw a NullPointerException exception.<br>
-     * Execution Record : true.
+     * <b>Test : </b> the wrong functioning of containsKey() method. <br>
+     * <b>Description : </b>  It was called containsValue() with a null parameter, the method is expected to throw a NullPointerException exception.<br>
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> the exception is passed to the calling method , if this is not handled then the program ends. <br>
+     * <b>Expected result : </b> NullPointerException thrown <br>
      */
     @Test (expected = NullPointerException.class)
     public void containsNullValue() {
@@ -197,11 +247,17 @@ public class MapAdapterTest {
     }
 
     /***
-     * This method generates only one Hset of entry so that the verification of the tests of this object is postponed to the class indicated.<br>
-     * The connection between the pairs in MapAdapter and EntrySet (backing) it is tested in the same class indicated. <br>
-     * Execution Record : true.<br>
+     * <b>Test : </b> the proper functioning of entrySet() method. <br>
+     * <b>Description : </b> This method generates only one Hset of entry so that the verification of the tests of this object is postponed to the class indicated.<br>
+     *  The connection between the pairs in MapAdapter and EntrySet (backing) it is tested in the same class indicated. <br>
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> entrySet has not a reference to null. <br>
+     * <b>Expected result : </b> entrySet has not a reference to null <br>
      * @see EntrySetTest EntrySetTest  - this class tested all the method of HSet on this type of Object, that implements HSet.
      */
+    @Test
     public void entrySet() {
         map1.put(0,"a");
         map1.put(1,"b");
@@ -212,14 +268,20 @@ public class MapAdapterTest {
 
         HSet hs = map1.entrySet();
         assertTrue(hs.size() == 5);
+        assertFalse(hs == null);
     }
 
     /***
-     * This method shows the proper functioning of equals that compare two MapAdapter. <br>
+     * <b>Test : </b> the proper functioning of equals() method. <br>
+     * <b>Description : </b> This method shows the proper functioning of equals that compare two MapAdapter. <br>
      * In the first part two pairs are inserted in map1, then compare map1 with the empty map2 with equals to see that they are not equal,
      * then insert the same elements in different order in map2 and verify that the two maps are equal.<br>
      * In the second part the map2 is cleaned, then the same pairs of before are inserted but with the values switched and it is verified that the two maps are not equal.<br>
-     * Execution Record : true.
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> two map are still equals if they don't change <br>
+     * <b>Expected result : </b> equals recognize to equals map <br>
      */
     @Test
     public void equals() {
@@ -248,9 +310,14 @@ public class MapAdapterTest {
     }
 
     /***
-     * This method tests the functioning of equals() when it is introduced a null parameter.<br>
+     * <b>Test : </b> the proper functioning of equals() method. <br>
+     * <b>Description : </b> This method tests the functioning of equals() when it is introduced a null parameter.<br>
      * It was called equals() with a null parameter, the method is expected to return false.<br>
-     * Execution Record : true.
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> a map cannot be equals to null. <br>
+     * <b>Expected result : </b> a map cannot be equals to null. <br>
      */
     @Test
     public void equalsToNull() {
@@ -258,19 +325,29 @@ public class MapAdapterTest {
     }
 
     /***
-     * This method tests the functioning of equals() when it is introduced a different class from HMap.<br>
+     * <b>Test : </b> the proper functioning of equals() method. <br>
+     * <b>Description : </b> This method tests the functioning of equals() when it is introduced a different class from HMap.<br>
      * It was called equals() with a java.util.Vector object, the method is expected to return false.<br>
-     * Execution Record : true.
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> a map cannot be equals with another supertype of HCollection <br>
+     * <b>Expected result : </b> a map cannot be equals with another supertype of HCollection <br>
      */
     @Test
     public void notEqualsToAnotherClass() {
         assertFalse(map1.equals(new java.util.Vector()));
     }
 
+
     /***
-     * This method checks the proper functioning of get(). <br>
-     * Initially four key and value pairs are added, then through the get() method it is checked if the values returned by get are those that were introduced.<br>
-     * Execution Record : true.
+     * <b>Test : </b> the proper functioning of get() method. <br>
+     * <b>Description : </b> Initially four key and value pairs are added, then through the get() method it is checked if the values returned by get are those that were introduced.<br>
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> if the map change the object returned may be not in the map. <br>
+     * <b>Expected result : </b> get recognize the elements inside <br>
      */
     @Test
     public void get(){
@@ -285,8 +362,13 @@ public class MapAdapterTest {
     }
 
     /***
-     * This method checks the proper functioning of get().<br>
-     * Check that the get method of an empty map returns a null element, the method works even in cases where you search for an element not present in the map
+     * <b>Test : </b> the proper functioning of get() method. <br>
+     * <b>Description : </b> Check that the get method of an empty map returns a null element, the method works even in cases where you search for an element not present in the map.<br>
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> the map always return null if an object is not present. <br>
+     * <b>Expected result : </b> the map always return null if an object is not present <br>
      */
     @Test
     public void getFromVoidMap(){
@@ -298,16 +380,29 @@ public class MapAdapterTest {
      * It was called get() with a null parameter, the method is expected to throw a NullPointerException.<br>
      * Execution Record : true.
      */
+    /***
+     * <b>Test : </b> the wronf functioning of get() method. <br>
+     * <b>Description : </b> It was called get() with a null parameter, the method is expected to throw a NullPointerException.<br>
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> the exception is passed to the calling method , if this is not handled then the program ends. <br>
+     * <b>Expected result : </b> NullPointerException thrown <br>
+     */
     @Test (expected = NullPointerException.class)
     public void getNull(){
         map1.get(null);
     }
 
     /***
-     * This method checks the proper functioning of hashCode().<br>
-     * Three key pairs and values are inserted in map1, these pairs are also inserted in map2. Assert that the two maps generate the same hashcode. <br>
-     * Finally, insert another element in map2 and verify that the hashcode generated by the two maps are different.
-     * Execution Record : true.
+     * <b>Test : </b> the proper functioning of hashcode() method. <br>
+     * <b>Description : </b>Three key pairs and values are inserted in map1, these pairs are also inserted in map2. Assert that the two maps generate the same hashcode. <br>
+     * Finally, insert another element in map2 and verify that the hashcode generated by the two maps are different. <br>
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> the hashcode don't change if the map don't change <br>
+     * <b>Expected result : </b> two map with the same elements have the same hashcode. <br>
      */
     @Test
     public void hashcode(){
@@ -330,10 +425,14 @@ public class MapAdapterTest {
     }
 
     /***
-     * This method checks the proper functioning of isEmpty().<br>
-     * It is initially confirmed that map1 is empty and map2 is empty, even if it is generated with a capacity of '12.
-     * a pair is inserted in map1 and map2 and it is confirmed that they are not empty
-     * Execution Record : true.
+     * <b>Test : </b> the proper functioning of isEmpty() method. <br>
+     * <b>Description : </b>It is initially confirmed that map1 is empty and map2 is empty, even if it is generated with a capacity of '12.
+     * a pair is inserted in map1 and map2 and it is confirmed that they are not empty. <br>
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> the map is empty if an object is not introduced. <br>
+     * <b>Expected result : </b> the map recognize when it is empty.<br>
      */
     @Test
     public void isEmpty(){
@@ -346,10 +445,15 @@ public class MapAdapterTest {
     }
 
     /***
-     * This method generates only one Hset of keys so that the verification of the tests of this object is postponed to the class indicated.<br>
+     * <b>Test : </b> the proper functioning of setKey() method. <br>
+     * <b>Description : </b> This method generates only one Hset of keys so that the verification of the tests of this object is postponed to the class indicated.<br>
      * The connection between the pairs in MapAdapter and SetKey (backing) it is tested in the same class indicated. <br>
-     * @see SetKeyTest SetKeyTest  - this class tested all the method of HSet on this type of Object, that implements HSet.
-     * Execution Record : true.
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> the setKey has not a reference to null. <br>
+     * <b>Expected result : </b> the setKey has not a reference to null. <br>
+     *  @see SetKeyTest SetKeyTest  - this class tested all the method of HSet on this type of Object, that implements HSet.
      */
     @Test
     public void keySet() {
@@ -362,15 +466,20 @@ public class MapAdapterTest {
 
         HSet hs = map1.keySet();
         assertTrue(hs.size() == 5);
+        assertFalse(hs == null);
     }
 
     /***
-     * This method checks the proper functioning of put().<br>
-     * First check that the map is empty, then enter four key pairs and value, check the size of the map that is four,
+     * <b>Test : </b> the proper functioning of put() method. <br>
+     * <b>Description : </b> First check that the map is empty, then enter four key pairs and value, check the size of the map that is four,
      * then insert another element with a key similar to that already inserted and check that the size does not change. <br>
      * Finally it is checked through the get() method that the values inserted by the respective keys correspond in the map and are present,
      * it is also checked that the key that has been inserted with a new value has been replaced. <br>
-     * Execution Record : true.
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> the map has more elements. <br>
+     * <b>Expected result : </b> the map introduce new elements and recognize them. <br>
      */
     @Test
     public void put(){
@@ -391,9 +500,13 @@ public class MapAdapterTest {
     }
 
     /***
-     * This method tests the wrong functioning of containsValue().<br>
-     * A null key is inserted as a parameter of put(), the method is expected to throw a NullPointerException.<br>
-     * Execution Record : true.
+     * <b>Test : </b> the wrong functioning of put() method. <br>
+     * <b>Description : </b> A null key is inserted as a parameter of put(), the method is expected to throw a NullPointerException.<br>
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> the exception is passed to the calling method , if this is not handled then the program ends. <br>
+     * <b>Expected result : </b> NullPointerException thrown <br>
      */
     @Test (expected = NullPointerException.class)
     public void putNullKey(){
@@ -401,9 +514,13 @@ public class MapAdapterTest {
     }
 
     /***
-     * This method tests the wrong functioning of containsValue().<br>
-     * A null key is inserted as a parameter of put(), the method is expected to throw a NullPointerException. <br>
-     * Execution Record : true.
+     * <b>Test : </b> the wrong functioning of put() method. <br>
+     * <b>Description : </b> A null key is inserted as a parameter of put(), the method is expected to throw a NullPointerException. <br>
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> the exception is passed to the calling method , if this is not handled then the program ends. <br>
+     * <b>Expected result : </b> NullPointerException thrown <br>
      */
     @Test(expected = NullPointerException.class)
     public void putNullValue(){
@@ -411,12 +528,16 @@ public class MapAdapterTest {
     }
 
     /***
-     * This method checks the proper functioning of putAll().<br>
-     * If a class is introduced that does not implement HMap as a parameter of putAll(), the code does not even compile,
+     * <b>Test : </b> the proper functioning of putAll() method. <br>
+     * <b>Description : </b> If a class is introduced that does not implement HMap as a parameter of putAll(), the code does not even compile,
      * for which it was not possible to throw ClassCastException in a test.<br>
      * Initially map1 and map2 are empty, then two pairs are inserted in map1, then map1 is inserted in map2.<br>
      * The map2 size that has changed is checked, then the values of the map1 keys are checked in map2 and the returned values match.<br>
-     * Execution Record : true.
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> the map has more elements. <br>
+     * <b>Expected result : </b> the map introduce all the elements of the HCollection. <br>
      */
     @Test
     public void putAll(){
@@ -432,9 +553,13 @@ public class MapAdapterTest {
     }
 
     /***
-     * This method tests the wrong functioning of putAll().<br>
-     * A null parameter is introduced in the putAll() method, the method is expected to run NullPointerException. <br>
-     * Execution Record : true.
+     * <b>Test : </b> the wrong functioning of putAll() method. <br>
+     * <b>Description : </b> A null parameter is introduced in the putAll() method, the method is expected to run NullPointerException. <br>
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> the exception is passed to the calling method , if this is not handled then the program ends. <br>
+     * <b>Expected result : </b> NullPointerException thrown <br>
      */
     @Test (expected = NullPointerException.class)
     public void putAllNull(){
@@ -442,11 +567,15 @@ public class MapAdapterTest {
     }
 
     /***
-     * This method checks the proper functioning of remove().<br>
-     * Initially check that the map is empty, add two pairs, check the size of the map that is two and that is empty. <br>
+     * <b>Test : </b> the proper functioning of remove() method. <br>
+     * <b>Description : </b> Initially check that the map is empty, add two pairs, check the size of the map that is two and that is empty. <br>
      * Finally it was removed the pairs inserted with the respective keys through the remove method. <br>
      * Finally it expects the map to be 0 and empty.<br>
-     * Execution Record : true.
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> the map has less elements <br>
+     * <b>Expected result : </b> the map remove the pairs correctly. <br>
      */
     @Test
     public void remove() {
@@ -463,9 +592,13 @@ public class MapAdapterTest {
     }
 
     /***
-     * This method tests the wrong functioning of remove().<br>
-     * A null parameter is introduced in the remove() method, the method is expected to run NullPointerException. <br>
-     * Execution Record : true.
+     * <b>Test : </b> the wrong functioning of remove() method. <br>
+     * <b>Description : </b> A null parameter is introduced in the remove() method, the method is expected to run NullPointerException. <br>
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> the exception is passed to the calling method , if this is not handled then the program ends. <br>
+     * <b>Expected result : </b> NullPointerException thrown <br>
      */
     @Test (expected = NullPointerException.class)
     public void removeNullKey(){
@@ -473,10 +606,14 @@ public class MapAdapterTest {
     }
 
     /***
-     * This method checks the proper functioning of remove().<br>
-     * Initially check that the map has size 0, then two pairs are added and verify that the map has size 2.<br>
-     * At the end the map is cleaned and checked that the map has size 0.
-     * Execution Record : true.
+     * <b>Test : </b> the proper functioning of size() method. <br>
+     * <b>Description : </b> Initially check that the map has size 0, then two pairs are added and verify that the map has size 2.<br>
+     * At the end the map is cleaned and checked that the map has size 0.<br>
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> the size may change if the map change.<br>
+     * <b>Expected result : </b> the map return the current size of the map and it must be right <br>
      */
     @Test
     public void size(){
@@ -495,6 +632,18 @@ public class MapAdapterTest {
      * Execution Record : true.<br>
      * @see CollectionValuesTest CollectionValuesTest  - this class tested all the method of HSet on this type of Object, that implements HSet.
      */
+    /***
+     * <b>Test : </b> the proper functioning of values() method. <br>
+     * <b>Description : </b> This method generates only one HCollection of Values so that the verification of the tests of this object is postponed to the class indicated.<br>
+     * In this case the class HCollection has been implemented with a set of values.<br>
+     * The connection between the pairs in MapAdapter and HCollection of Values (backing) it is tested in the same class indicated. <br>
+     * <b>Pre-condition : </b>two mapadapter map1 and map2 properly initialized, two Mapadapter.Entry e1, e2 properly initialized.<br>#
+     * e1 = { 0 = a  }
+     * e2 = { 1 = b}
+     * <b>Post-condition : </b> values is correctly initialized. <br>
+     * <b>Expected result : </b> values has not a reference to null. <br>
+     * @see CollectionValuesTest CollectionValuesTest  - this class tested all the method of HSet on this type of Object, that implements HSet.
+     */
     @Test
     public void values() {
         map1.put(0,"a");
@@ -506,5 +655,6 @@ public class MapAdapterTest {
 
         HCollection hs = map1.values();
         assertTrue(hs.size() == 5);
+        assertFalse(hs == null);
     }
 }

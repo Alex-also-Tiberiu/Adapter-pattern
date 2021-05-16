@@ -13,7 +13,8 @@ import static org.junit.Assert.*;
  * The method that instantiates the object to be tested is setup(), which will be executed before all tests.<br>
  * In the first part the HSet methods will be tested, but in the second part the backing to MapAdapter will be verified.<br>
  * Tests of this class are performed by the ESTestRunner class. <br>
- * @see ESTestRunner ESTestRunner.
+ * @see EntrySetTestRunner EntrySestTestRunner.<br>
+ * @see MapAdapter MapAdapter. <br>
  *
  */
 public class EntrySetTest {
@@ -38,7 +39,7 @@ public class EntrySetTest {
     private HSet es2;
 
     /***
-     * <b>Test : </b> <br>
+     * <b>Test : </b> Setup test, this is done before every test <br>
      * <b>Description : </b> This method instantiates MapAdapter m1 and after instantiates an HSet object of EntrySet nature es1. <br>
      * It also instantiates a MapAdapter m2 with some additional elements inside, and a HSet of EntrySet nature es2 that has the elements of ms2. <br>
      * Instantiation of these objects occurs before all test class methods. <br>
@@ -46,8 +47,8 @@ public class EntrySetTest {
      *  es1 = m1 = {  } <br>
      *  es2 = m2 = { [0,a] , [1,b] , [2,c] , [3,d] } <br>
      * <b>Pre-condition : </b> the sample variables have been created without being instantiated <br>
-     * <b>Post-condition : </b> <br>
-     * <b>Expected result : </b> <br>
+     * <b>Post-condition : </b> the objects have not a reference to null <br>
+     * <b>Expected result : </b> the objects have not a reference to null <br>
      */
     @Before
     public void setup(){
@@ -353,6 +354,8 @@ public class EntrySetTest {
         HIterator h2 = es2.iterator();
         assertFalse(h1.hasNext());
         assertTrue(h2.hasNext());
+        m1.put(0,"a");
+        assertTrue(h1.hasNext());
     }
 
     /***

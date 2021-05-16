@@ -3,25 +3,26 @@ package myAdapter;
 /**
  *
  * public interface List
- * extends Collection
+ * extends
+ * @see HCollection
  *
- * An ordered collection (also known as a sequence). The user of this interface has precise control over where in the list each element is inserted. The user can access elements by their integer index (position in the list), and search for elements in the list.
- *
- * Unlike sets, lists typically allow duplicate elements. More formally, lists typically allow pairs of elements e1 and e2 such that e1.equals(e2), and they typically allow multiple null elements if they allow null elements at all. It is not inconceivable that someone might wish to implement a list that prohibits duplicates, by throwing runtime exceptions when the user attempts to insert them, but we expect this usage to be rare.
- *
- * The List interface places additional stipulations, beyond those specified in the Collection interface, on the contracts of the iterator, add, remove, equals, and hashCode methods. Declarations for other inherited methods are also included here for convenience.
- *
- * The List interface provides four methods for positional (indexed) access to list elements. Lists (like Java arrays) are zero based. Note that these operations may execute in time proportional to the index value for some implementations (the LinkedList class, for example). Thus, iterating over the elements in a list is typically preferable to indexing through it if the caller does not know the implementation.
- *
- * The List interface provides a special iterator, called a ListIterator, that allows element insertion and replacement, and bidirectional access in addition to the normal operations that the Iterator interface provides. A method is provided to obtain a list iterator that starts at a specified position in the list.
- *
- * The List interface provides two methods to search for a specified object. From a performance standpoint, these methods should be used with caution. In many implementations they will perform costly linear searches.
- *
- * The List interface provides two methods to efficiently insert and remove multiple elements at an arbitrary point in the list.
- *
- * Note: While it is permissible for lists to contain themselves as elements, extreme caution is advised: the equals and hashCode methods are no longer well defined on a such a list.
- *
- * Some list implementations have restrictions on the elements that they may contain. For example, some implementations prohibit null elements, and some have restrictions on the types of their elements. Attempting to add an ineligible element throws an unchecked exception, typically NullPointerException or ClassCastException. Attempting to query the presence of an ineligible element may throw an exception, or it may simply return false; some implementations will exhibit the former behavior and some will exhibit the latter. More generally, attempting an operation on an ineligible element whose completion would not result in the insertion of an ineligible element into the list may throw an exception or it may succeed, at the option of the implementation. Such exceptions are marked as "optional" in the specification for this interface.
+ * An ordered collection (also known as a sequence). The user of this interface has precise control over where in the list each element is inserted. The user can access elements by their integer index (position in the list), and search for elements in the list.<br>
+ * <br>
+ * Unlike sets, lists typically allow duplicate elements. More formally, lists typically allow pairs of elements e1 and e2 such that e1.equals(e2), and they typically allow multiple null elements if they allow null elements at all. It is not inconceivable that someone might wish to implement a list that prohibits duplicates, by throwing runtime exceptions when the user attempts to insert them, but we expect this usage to be rare.<br>
+ * <br>
+ * The List interface places additional stipulations, beyond those specified in the Collection interface, on the contracts of the iterator, add, remove, equals, and hashCode methods. Declarations for other inherited methods are also included here for convenience.<br>
+ * <br>
+ * The List interface provides four methods for positional (indexed) access to list elements. Lists (like Java arrays) are zero based. Note that these operations may execute in time proportional to the index value for some implementations (the LinkedList class, for example). Thus, iterating over the elements in a list is typically preferable to indexing through it if the caller does not know the implementation.<br>
+ *<br>
+ * The List interface provides a special iterator, called a ListIterator, that allows element insertion and replacement, and bidirectional access in addition to the normal operations that the Iterator interface provides. A method is provided to obtain a list iterator that starts at a specified position in the list.<br>
+ *<br>
+ * The List interface provides two methods to search for a specified object. From a performance standpoint, these methods should be used with caution. In many implementations they will perform costly linear searches.<br>
+ *<br>
+ * The List interface provides two methods to efficiently insert and remove multiple elements at an arbitrary point in the list.<br>
+ *<br>
+ * Note: While it is permissible for lists to contain themselves as elements, extreme caution is advised: the equals and hashCode methods are no longer well defined on a such a list.<br>
+ *<br>
+ * Some list implementations have restrictions on the elements that they may contain. For example, some implementations prohibit null elements, and some have restrictions on the types of their elements. Attempting to add an ineligible element throws an unchecked exception, typically NullPointerException or ClassCastException. Attempting to query the presence of an ineligible element may throw an exception, or it may simply return false; some implementations will exhibit the former behavior and some will exhibit the latter. More generally, attempting an operation on an ineligible element whose completion would not result in the insertion of an ineligible element into the list may throw an exception or it may succeed, at the option of the implementation. Such exceptions are marked as "optional" in the specification for this interface.<br>
  */
 
 public interface HList extends HCollection {
@@ -31,7 +32,6 @@ public interface HList extends HCollection {
      * Shifts the element currently at that position (if any) and any subsequent elements to the right (adds one to their indices).
      * @param index int index at which the specified element is to be inserted.
      * @param element Object element to be inserted.
-     * @throws UnsupportedOperationException - if the add method is not supported by this list.
      * @throws ClassCastException if the class of the specified element prevents it from being added to this list.
      * @throws NullPointerException if the specified element is null and this list does not support null elements.
      * @throws IllegalArgumentException if some aspect of the specified element prevents it from being added to this list.
@@ -46,7 +46,6 @@ public interface HList extends HCollection {
      * List classes should clearly specify in their documentation any restrictions on what elements may be added.
      * @param o Object element to be appended to this list.
      * @return true (as per the general contract of the Collection.add method).
-     * @throws UnsupportedOperationException - if the add method is not supported by this list.
      * @throws ClassCastException if the class of the specified element prevents it from being added to this list.
      * @throws NullPointerException if the specified element is null and this list does not support null elements.
      * @throws IllegalArgumentException if some aspect of this element prevents it from being added to this list.
@@ -60,7 +59,6 @@ public interface HList extends HCollection {
      * (Note that this will occur if the specified collection is this list, and it's nonempty.)
      * @param c collection whose elements are to be added to this list.
      * @return true if this list changed as a result of the call.
-     * @throws UnsupportedOperationException - if the addAll method is not supported by this list.
      * @throws ClassCastException if the class of an element in the specified collection prevents it from being added to this list.
      * @throws NullPointerException if the specified collection contains one or more null elements and this list does not support null elements, or if the specified collection is null.
      * @throws IllegalArgumentException if some aspect of an element in the specified collection prevents it from being added to this list.
@@ -76,7 +74,6 @@ public interface HList extends HCollection {
      * @param index index at which to insert first element from the specified collection.
      * @param c elements to be inserted into this list.
      * @return true if this list changed as a result of the call.
-     * @throws UnsupportedOperationException if the addAll method is not supported by this list.
      * @throws ClassCastException if the class of one of elements of the specified collection prevents it from being added to this list.
      * @throws NullPointerException if the specified collection contains one or more null elements and this list does not support null elements, or if the specified collection is null.
      * @throws IllegalArgumentException if some aspect of one of elements of the specified collection prevents it from being added to this list.
@@ -87,7 +84,6 @@ public interface HList extends HCollection {
     /**
      * Removes all of the elements from this list (optional operation).
      * This list will be empty after this call returns (unless it throws an exception).
-     * @throws UnsupportedOperationException if the clear method is not supported by this list.
      */
     void clear();
 
@@ -276,7 +272,7 @@ public interface HList extends HCollection {
      * @return a view of the specified range within this list.
      * @throws IndexOutOfBoundsException - for an illegal endpoint index value (fromIndex < 0 || toIndex > size || fromIndex > toIndex).
      */
-    ListAdapter subList(int fromIndex, int toIndex);
+    HList subList(int fromIndex, int toIndex);
 
     /**
      * Returns an array containing all of the elements in this list in proper sequence.

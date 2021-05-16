@@ -2,14 +2,32 @@ package myAdapter;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
+/***
+ * public class MapAdapter. <br><b> implements : </b> <br>
+ * @see HMap HMap <br>
+ * @see HSet HSet <br>
+ * @see HCollection <br>
+ * Public class MapAdapter, which realizes the Map interface Java library 1.4.2.<br>
+ * This class has been implemented with the hashtableAdaptee class of the version of java cldc 1.1 <br>
+ * the structure of MapAdapter is based on a hashtable, but maintains the behavior of a map. consequently the class respects the HMap interface. <br>
+ */
 public class MapAdapter implements HMap {
 
     private HashtableAdaptee table;
 
+    /***
+     * Constructs a new, empty MapAdapter with a default initial capacity and load factor.
+     */
     public MapAdapter() {
         table = new HashtableAdaptee();
     }
 
+    /***
+     * Constructs a new, empty MapAdapter with a default initial capacity and load factor.<br>
+     * @param initialCapacity the initial capacity of the hashtable.<br>
+     * @throws IllegalArgumentException if the initial capacity is less than zero.
+     *
+     */
     public MapAdapter(int initialCapacity) {
         table = new HashtableAdaptee(initialCapacity);
     }
@@ -698,7 +716,7 @@ public class MapAdapter implements HMap {
         @Override
         public Object next() {
             if (!enumerk.hasMoreElements()) {
-                throw new NoSuchElementException();
+                throw new NoSuchElementException("no more elements");
             }
             hasIterate = true;
             lastKey = enumerk.nextElement();

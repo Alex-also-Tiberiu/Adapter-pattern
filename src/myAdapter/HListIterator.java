@@ -1,6 +1,15 @@
 package myAdapter;
 import java.util.NoSuchElementException;
 
+/***
+ *
+ * <br>
+ * An iterator for lists that allows the programmer to traverse the list in either direction, modify the list during iteration, and obtain the iterator's current position in the list. A ListIterator has no current element; its cursor position always lies between the element that would be returned by a call to previous() and the element that would be returned by a call to next(). In a list of length n, there are n+1 valid index values, from 0 to n, inclusive. <br>
+ * <br>
+ *
+ *
+ */
+
 public interface HListIterator extends HIterator {
     /**
      * Inserts the specified element into the list (optional operation).
@@ -11,10 +20,8 @@ public interface HListIterator extends HIterator {
      * and a subsequent call to previous would return the new element.
      * (This call increases by one the value that would be returned by a call to nextIndex or previousIndex.)
      * @param o - the element with which to replace the last element returned by next or previous.
-     * @throws UnsupportedOperationException - if the set operation is not supported by this list iterator.
      * @throws ClassCastException - if the class of the specified element prevents it from being added to this list.
      * @throws IllegalArgumentException - if some aspect of the specified element prevents it from being added to this list.
-     * @throws IllegalStateException - if neither next nor previous have been called, or remove or add have been called after the last call to next or previous.
      */
     void add(Object o);
 
@@ -63,7 +70,6 @@ public interface HListIterator extends HIterator {
     /**
      * Removes from the list the last element that was returned by next or previous (optional operation).
      * This call can only be made once per call to next or previous. It can be made only if ListIterator.add has not been called after the last call to next or previous.
-     * @throws UnsupportedOperationException - if the remove operation is not supported by this list iterator.
      * @throws IllegalStateException - neither next nor previous have been called, or remove or add have been called after the last call to * next or previous.
      */
     void remove();
@@ -71,8 +77,6 @@ public interface HListIterator extends HIterator {
     /**
      * Replaces the last element returned by next or previous with the specified element (optional operation). This call can be made only if neither ListIterator.remove nor ListIterator.add have been called after the last call to next or previous.
      * @param o - the element with which to replace the last element returned by next or previous.
-     * @throws UnsupportedOperationException - if the set operation is not supported by this list iterator.
-     * @throws ClassCastException - if the class of the specified element prevents it from being added to this list.
      * @throws IllegalArgumentException - if some aspect of the specified element prevents it from being added to this list.
      * @throws IllegalStateException - if neither next nor previous have been called, or remove or add have been called after the last call to next or previous.
      */

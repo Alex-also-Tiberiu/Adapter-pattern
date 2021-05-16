@@ -13,7 +13,8 @@ import static org.junit.Assert.*;
  * The method that instantiates the object to be tested is setup(), which will be executed before all tests.<br>
  * In the first part the HSet methods will be tested, but in the second part the backing to MapAdapter will be verified.<br>
  * Tests of this class are performed by the ESTestRunner class. <br>
- * @see SKTestRunner ESTestRunner.
+ * @see SetKeyTestRunner SetKeyTestRunner. <br>
+ * @see MapAdapter MapAdapter. <br>
  *
  */
 public class SetKeyTest {
@@ -48,8 +49,8 @@ public class SetKeyTest {
      *  sk2 = { 0 , 1 , 2 , 3 } <br>
      *  m2 = { [0,a] , [1,b] , [2,c] , [3,d] } <br>
      * <b>Pre-condition : </b> the sample variables have been created without being instantiated <br>
-     * <b>Post-condition : </b> <br>
-     * <b>Expected result : </b> <br>
+     * <b>Post-condition : </b> the objects have not a reference to null <br>
+     * <b>Expected result : </b> the objects have not a reference to null <br>
      */
     @Before
     public void setup(){

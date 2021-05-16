@@ -1,11 +1,19 @@
 package myAdapter;
-
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Vector;
 
-/**
- * The type Vector adaptee.
+/***
+ * The VectorAdaptee class implements a growable array of objects.<br>
+ * The class has been implemented with the vector methods of the version of java cldc 1.1 <br>
+ * Like an array, it contains components that can be accessed using an integer index. However, the size of a Vector can grow or shrink as needed to accommodate
+ * adding and removing items after theVector has been created.<br>
+ * Each vector tries to optimize storage management by maintaining a capacity and a capacity Increment.<br>
+ * The capacity is always at least as large as the vector size; it is usually larger because as components are added
+ * to the vector, the vector’s storage increases in chunks the size of capacity Increment.<br>
+ * An application can increase the capacity of a vector before inserting a large number of components;
+ * this reduces the amount of incremental reallocation.<br>
+ * @see HVector HVector.
  */
 public class VectorAdaptee implements HVector {
     /**

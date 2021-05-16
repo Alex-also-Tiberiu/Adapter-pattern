@@ -1,18 +1,33 @@
 package myAdapter;
-
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Enumeration;
 import java.util.NoSuchElementException;
+
+/***
+ * public class List <br> implements
+ * @see HList,
+ * @see HIterator,
+ * @see HListIterator, <br>
+ * Public class ListAdapter, which realizes the List interface Java library 1.4.2.<br>
+ * The class was implemented with the Vectoradaptee that mimics the vector behavior of the version of java cldc 1.1. <br>
+ * The structure of Listadapter is based on a vector, but maintains the behavior of a list. consequently the class respects the Hlist interface. <br>
+ * <b>Note this : </b> if the list change the size when an iterator is initialized on it, the iterator will restart from the beginning of the list.<br>
+ *
+ */
 
 public class ListAdapter implements HList {
     private VectorAdaptee v;
-    private int from;
-    private int to;
 
+    /***
+     * Creates a new scrolling list.
+     */
     public ListAdapter() {
         v = new VectorAdaptee();
     }
 
+    /***
+     * Creates a new scrolling list initialized with the specified number of rows.
+     * @param rows the number of items to show.
+     */
     public ListAdapter(int rows) {
         v = new VectorAdaptee(rows);
     }
@@ -41,7 +56,8 @@ public class ListAdapter implements HList {
     public boolean addAll(HCollection c) {
         if(c.equals(null))
             throw new NullPointerException("null Collection is not allowed");
-
+        if(!(c instanceof ListAdapter))
+            throw new ClassCastException("Different HCollection that are not implemented by ListAdapter are not allowed");
         HIterator h = c.iterator();
 
         if(!h.hasNext())
@@ -64,6 +80,8 @@ public class ListAdapter implements HList {
             throw new IndexOutOfBoundsException("select a different index to add the elements");
         if(c.equals(null))
             throw new NullPointerException("null Collection is not allowed");
+        if(!(c instanceof ListAdapter))
+            throw new ClassCastException("Different HCollection that are not implemented by ListAdapter are not allowed");
         HIterator h = c.iterator();
         if(!h.hasNext())
             return false;
@@ -167,8 +185,8 @@ public class ListAdapter implements HList {
     }
 
     @Override
-    public Iteratorr iterator() {
-        return new Iteratorr();
+    public HIterator iterator() {
+        return new Iteratorr(this.v);
     }
 
     @Override
@@ -297,29 +315,26 @@ public class ListAdapter implements HList {
         while(h.hasNext()) {
             a[ia++] = h.next();
         }
+        while(ia < a.length)
+            a[ia++] = null;
         return a;
     }
 
     @Override
-    public ListAdapter subList(int fromIndex, int toIndex) {
+    public HList subList(int fromIndex, int toIndex) {
         subListRangeCheck(fromIndex, toIndex, this.size());
-        return new ListAdapter.SmallerList(this.v, fromIndex, toIndex);
+        return new SmallerList(this.v, fromIndex, toIndex);
     }
 
     private static void subListRangeCheck(int fromIndex, int toIndex, int size) {
         if (fromIndex < 0)
             throw new IndexOutOfBoundsException("fromIndex = " + fromIndex);
-        if (toIndex > size)
+        if (toIndex >= size +1 )
             throw new IndexOutOfBoundsException("toIndex = " + toIndex);
         if (fromIndex > toIndex)
             throw new IllegalArgumentException("fromIndex(" + fromIndex +
                     ") > toIndex(" + toIndex + ")");
     }
-
-
-
-
-
 
 
     /***
@@ -334,23 +349,80 @@ public class ListAdapter implements HList {
         private SmallerList(VectorAdaptee x, int startPosition, int endPosition){
             w = x;
             this.startPosition = startPosition;
-            this.endPosition = endPosition;
+            this.endPosition = endPosition-1;
         }
 
-
-        public void add(int index, Object object){ w.insertElementAt(object,index+startPosition); }
+        public void add(int index, Object object){
+            if(index < 0 || index  > size())
+                throw new IndexOutOfBoundsException("select a lower index");
+            if(object.equals(null))
+                throw new NullPointerException("null object is not allowed");
+            w.insertElementAt(object,index+startPosition);
+            endPosition++;
+        }
 
         public boolean add(Object o) {
             if(o.equals(null))
                 throw new NullPointerException("null Object is not allowed");
+            w.insertElementAt(o,endPosition++);
+            return true;
+        }
+
+        public boolean addAll(HCollection c) {
+            if(c.equals(null))
+                throw new NullPointerException("null Collection is not allowed");
+            if(!(c instanceof ListAdapter))
+                throw new ClassCastException("Different HCollection that are not implemented by ListAdapter are not allowed");
+            HIterator h = c.iterator();
+
+            if(!h.hasNext())
+                return false;
             else {
-                w.insertElementAt(o,endPosition++);
+                while (h.hasNext()) {
+                    Object obj = h.next();
+                    if(obj.equals(null))
+                        throw new NullPointerException("null element is not allowed");
+                    else {
+                        add(obj);
+                    }
+                }
                 return true;
             }
         }
 
+        public boolean addAll(int index, HCollection c) {
+            if(index < 0 || index > size())
+                throw new IndexOutOfBoundsException("select a different index to add the elements");
+            if(c.equals(null))
+                throw new NullPointerException("null Collection is not allowed");
+            if(!(c instanceof ListAdapter))
+                throw new ClassCastException("Different HCollection that are not implemented by ListAdapter are not allowed");
+            HIterator h = c.iterator();
+            if(!h.hasNext())
+                return false;
+            else {
+                while( h.hasNext() ) {
+                    Object obj = h.next();
+                    if(obj.equals(null))
+                        throw new NullPointerException("null element is not allowed");
+                    else {
+                        add(index++, obj);
+                    }
+                }
+                return true;
+            }
+        }
+
+        public void clear() {
+            for(int i = startPosition; i <= endPosition; i++) {
+                w.removeElementAt(startPosition);
+            }
+        }
+
         public boolean contains (Object object){
-            for (int i=startPosition;i<endPosition;i++){
+            if(object.equals(null))
+                throw new NullPointerException("null object is not allowed");
+            for (int i = startPosition; i <= endPosition ; i++){
                 if (w.elementAt(i).equals(object)){
                     return true;
                 }
@@ -358,18 +430,53 @@ public class ListAdapter implements HList {
             return false;
         }
 
-        public void clear() {
-            for(int i = startPosition; i < endPosition; i++) {
-                w.removeElementAt(startPosition);
+        public boolean containsAll(HCollection c) {
+            if(c.equals(null))
+                throw new NullPointerException("null HCollection is not allowed");
+            if(!(c instanceof ListAdapter))
+                throw new ClassCastException("ListAdapter object is required");
+            if(c.size() > size())
+                return false;
+
+            HIterator h = c.iterator();
+            while (h.hasNext()) {
+                Object obj = h.next();
+                if (obj.equals(null))
+                    throw new NullPointerException("null HCollection is not allowed");
+                else if (!contains(obj))
+                    return false;
             }
+            return true;
+        }
+
+        public boolean equals(Object o){
+            if(!(o instanceof ListAdapter))
+                return false;
+            if(o == null)
+                return false;
+            SmallerList s = (SmallerList)o;
+            IteratorSub h1 = iterator();
+            IteratorSub h2 = s.iterator();
+            while(h1.hasNext() && h2.hasNext()) {
+                    Object obj1 = h1.next();
+                    Object obj2 = h2.next();
+                    if(!obj1.equals(obj2))
+                        return false;
+                }
+            if(h1.hasNext() || h2.hasNext())
+                return false;
+            else
+                return true;
         }
 
         public Object get(int index) {
+            if(index < 0 || index > size())
+                throw new IndexOutOfBoundsException("select a lower index");
             return w.elementAt(startPosition + index);
         }
 
-        public Iteratorr iterator() {
-            return new Iteratorr(w,startPosition,endPosition);
+        public IteratorSub iterator() {
+            return new IteratorSub(w,startPosition,endPosition);
         }
 
         public ListIteratorr listIterator() {
@@ -381,43 +488,6 @@ public class ListAdapter implements HList {
                 throw new IndexOutOfBoundsException("It was introduced an invalid index");
 
             return new ListIteratorr(w,index,startPosition,endPosition);
-        }
-
-        public boolean containsAll(HCollection c) {
-            if(c.equals(null))
-                throw new NullPointerException("null HCollection is not allowed");
-            if(c.size() > size())
-                return false;
-
-            int coincidence = 0;
-            HIterator h = c.iterator();
-            while (h.hasNext()) {
-                Object obj = h.next();
-                if (obj.equals(null))
-                    throw new NullPointerException("null HCollection is not allowed");
-                else if (contains(obj))
-                    coincidence++;
-            }
-            return coincidence == c.size();
-        }
-
-        public boolean equals(Object o){
-            if(!(o instanceof ListAdapter))
-                return false;
-            ListIteratorr h1 = listIterator();
-            ListIteratorr h2 = new ListIteratorr((ListAdapter) o);
-            while(h1.hasNext() && h2.hasNext()) {
-                if(h1.next().equals(h2.next())) {
-                    h1.next();
-                    h2.next();
-                }
-                else
-                    return false;
-            }
-            if(h1.hasNext() || h2.hasNext())
-                return false;
-            else
-                return true;
         }
 
         public int hashCode() {
@@ -435,21 +505,21 @@ public class ListAdapter implements HList {
                 throw new NullPointerException("null object is not allowed");
             int i = w.indexOf(o,startPosition);
             if( i <endPosition)
-                return i;
+                return  i - startPosition;
             else
                 return -1;
         }
 
         public boolean isEmpty() {
-            return startPosition == endPosition;
+            return startPosition > endPosition  ;
         }
 
         public int lastIndexOf(Object o) {
             if(o.equals(null))
                 throw new NullPointerException("null element is not allowed");
             int i = w.lastIndexOf(o,startPosition);
-            if( i <endPosition)
-                return i;
+            if( i < endPosition)
+                return i - startPosition;
             else
                 return -1;
         }
@@ -459,17 +529,20 @@ public class ListAdapter implements HList {
                 throw new IndexOutOfBoundsException("It was introduced an invalid index");
             Object give = w.elementAt(index + startPosition);
             w.removeElementAt(index);
+            endPosition--;
             return give;
         }
 
         public boolean remove(Object o) {
             if(o.equals(null))
                 throw  new NullPointerException("Null object is not allowed");
+            if( w.indexOf(o) < 0  )
+                return false;
             boolean set = false;
-            ListIteratorr h = listIterator();
-            while(h.hasNext()) {
-                if(h.next().equals(o))
-                    set = true;
+            if(w.indexOf(o) > startPosition && w.indexOf(o) <= endPosition) {
+                w.removeElement(o);
+                set = true;
+                endPosition--;
             }
             return set;
         }
@@ -477,6 +550,8 @@ public class ListAdapter implements HList {
         public boolean removeAll(HCollection c) {
             if(c.equals(null))
                 throw new NullPointerException("null HCollection is not allowed");
+            if(! (c instanceof ListAdapter))
+                throw new ClassCastException("ListAdapter object is required");
             HIterator h = c.iterator();
             if( !h.hasNext() )
                 return false;
@@ -486,9 +561,8 @@ public class ListAdapter implements HList {
                     Object obj = h.next();
                     if(obj.equals(null))
                         throw new NullPointerException("null element detected in the HCollection");
-                    else if( remove(obj) ) {
+                    else if( remove(obj) )
                         set = true;
-                    }
                 }
                 return set;
             }
@@ -497,29 +571,46 @@ public class ListAdapter implements HList {
         public boolean retainAll(HCollection c) {
             if(c.equals(null))
                 throw new NullPointerException("null HCollection is not allowed");
-            HIterator h = c.iterator();
-            if( !h.hasNext() )
-                return false;
-            else {
-                boolean set = false;
-                VectorAdaptee x = new VectorAdaptee();
-                while(h.hasNext()) {
-                    Object obj = h.next();
-                    if(obj.equals(null))
-                        throw new NullPointerException("null element detected in the HCollection");
-                    else if(contains(obj)) {
-                        x.addElement(obj);
-                        set = true;
+            if(!(c instanceof ListAdapter))
+                throw new ClassCastException("ListAdapter object is required");
+            HIterator h;
+            boolean set = false;
+            if(c.size() > size()) {
+                h = (IteratorSub) c.iterator();
+                if (!h.hasNext())
+                    return false;
+                else {
+                    while (h.hasNext()) {
+                        Object obj = h.next();
+                        if (obj.equals(null))
+                            throw new NullPointerException("null element detected in the HCollection");
+                        else if (!contains(obj)) {
+                            remove(obj);
+                            set = true;
+                        }
                     }
                 }
-                if(set)
-                    w = x;
-                return set;
             }
+            else {
+                h = (IteratorSub) iterator();
+                if (!h.hasNext())
+                    return false;
+                else {
+                    while (h.hasNext()) {
+                        Object obj = h.next();
+                        if (!c.contains(obj)) {
+                            remove(obj);
+                            set = true;
+                        }
+                    }
+                }
+            }
+                return set;
         }
 
+
         public Object set(int index, Object element) {
-            if(index < 0 || index >= size() )
+            if(index < 0 || index > size() )
                 throw new IndexOutOfBoundsException("index not valid");
             if(element.equals(null))
                 throw new NullPointerException("null element is not allowed");
@@ -530,16 +621,16 @@ public class ListAdapter implements HList {
         }
 
         public int size(){
-            return endPosition-startPosition;
+            return (endPosition + 1) -startPosition;
         }
+
 
         public Object[] toArray() {
             Object[] a = new Object[size()];
-            if(isEmpty()) { }
-            else {
-                ListIteratorr h = this.listIterator();
+            if (!isEmpty()) {
+                IteratorSub h = iterator();
                 int ia = 0;
-                while(h.hasNext()){
+                while (h.hasNext()) {
                     a[ia++] = h.next();
                 }
             }
@@ -549,21 +640,70 @@ public class ListAdapter implements HList {
         public Object[] toArray(Object[] a) {
             if(a.equals(null))
                 throw new NullPointerException("null array is not allowed");
-            if (!(a instanceof Object))
-                throw new ArrayStoreException("invalid supertype of array");
             if(a.length < size())
                 a = new Object[size()];
-            ListIteratorr h = this.listIterator();
+            IteratorSub h = iterator();
             int ia = 0;
             while(h.hasNext()) {
                 a[ia++] = h.next();
             }
+            while(ia < a.length)
+                a[ia++] = null;
             return a;
         }
 
+        private class IteratorSub implements HIterator {
+            private int place;
+            private int to;
+            private int oldSize;
+            private VectorAdaptee w;
+            private boolean ok;
+
+
+            private IteratorSub( VectorAdaptee x, int from, int to) {
+                place = from;
+                this.to = to;
+                oldSize = to;
+                w = x;
+            }
+
+            @Override
+            public boolean hasNext() {
+                if(oldSize != endPosition ) {
+                    place = startPosition;
+                    to = endPosition ;
+                }
+                if( place <= to ){
+                    ok = true;
+                    return true;
+                }
+                else
+                    return false;
+            }
+
+            @Override
+            public Object next() {
+                if(hasNext()) {
+                    Object give = w.elementAt(place);
+                    place++;
+                    return give;
+                }
+                else
+                    throw new NoSuchElementException("Iterator come to the end");
+            }
+
+            @Override
+            public void remove() {
+                if(ok) {
+                    ok = false;
+                    w.removeElementAt(place);
+                }
+                else
+                    throw new IllegalArgumentException("  \"Has next\"  wasn't call");
+            }
+        }
+
     }
-
-
 
 
     /***
@@ -571,11 +711,12 @@ public class ListAdapter implements HList {
      */
     private class ListIteratorr implements HListIterator {
         private int place;
-        private final int start;
-        private final int to;
+        private int start;
+        private int to;
         private VectorAdaptee w;
         private boolean next;
         private boolean prev;
+        private boolean stopset = true;
 
         private ListIteratorr() {
             place = start = 0;
@@ -632,6 +773,7 @@ public class ListAdapter implements HList {
             if(o.equals(null))
                 throw new NullPointerException("Null value is not accepted");
             w.insertElementAt(o, place);
+            stopset = true;
         }
 
         /*
@@ -639,6 +781,10 @@ public class ListAdapter implements HList {
          */
         @Override
         public boolean hasNext() {
+            if(to != size()) {
+                to = w.size();
+                place = start;
+            }
             if(place < to) {
                 return true;
             }
@@ -651,6 +797,10 @@ public class ListAdapter implements HList {
          */
         @Override
         public boolean hasPrevious() {
+            if(to != size()) {
+                to = w.size();
+                place = start;
+            }
             if(place > start) {
                 return true;
             }
@@ -666,6 +816,7 @@ public class ListAdapter implements HList {
             if (hasNext()) {
                 next = true;
                 prev = false;
+                stopset = false;
                 return w.elementAt(place++);
             }
             else
@@ -677,6 +828,10 @@ public class ListAdapter implements HList {
          */
         @Override
         public int nextIndex() {
+            if(to != size()) {
+                to = w.size();
+                place = start;
+            }
             return place;
         }
 
@@ -688,6 +843,7 @@ public class ListAdapter implements HList {
             if (hasPrevious()) {
                 next = false;
                 prev = true;
+                stopset = false;
                 return w.elementAt(--place);
             }
             else
@@ -699,10 +855,14 @@ public class ListAdapter implements HList {
          */
         @Override
         public int previousIndex() {
-            if(place > from)
-                return place - 1;
+            if(to != size()) {
+                to = w.size();
+                place = start;
+            }
+            if(place > start)
+                return (place - 1);
             else
-                throw new NoSuchElementException("Iterator has no previous index");
+                return -1;
         }
 
         /*
@@ -710,11 +870,13 @@ public class ListAdapter implements HList {
          */
         @Override
         public void remove() {
-            if(place > from && place < to) {
+            if(place > start && place < to) {
                 if(next) {
+                    stopset = true;
                     w.removeElementAt(--place);
                 }
                 else if(prev) {
+                    stopset = true;
                     w.removeElementAt(place);
                 }
             }
@@ -727,15 +889,21 @@ public class ListAdapter implements HList {
          */
         @Override
         public void set(Object o) {
-            if(place >= from && place < to) {
+            if(stopset)
+                throw  new IllegalStateException("next() or previous() was not called");
+            if(place >= start && place <= to) {
                 if (next)
                     w.setElementAt(o, place - 1);
                 else if (prev)
                     w.setElementAt(o, place);
             }
+            else
+                throw new IllegalArgumentException("Iterator didn't call next or previous");
         }
 
     }
+
+
 
 
     /***
@@ -743,50 +911,43 @@ public class ListAdapter implements HList {
      */
 
     private class Iteratorr implements HIterator {
-        private int place;
-        private final int start;
-        private final int to;
         private VectorAdaptee w;
         private boolean ok;
+        public Enumeration enumer;
+        public Object lastElement;
 
-        public Iteratorr() {
-            start = 0;
-            to = 0;
-            w = v;
-            place = 0;
-        }
-
-        private Iteratorr( VectorAdaptee x, int from, int to) {
-            place = from;
-            start = from;
-            this.to = to;
+        public Iteratorr(VectorAdaptee x) {
             w = x;
+            enumer = w.elements();
         }
+
 
         @Override
         public boolean hasNext() {
-            if( place < to ){
-                ok = true;
-                return true;
-            }
+            if(enumer.hasMoreElements())
+                return ok = true;
             else
                 return false;
         }
 
         @Override
         public Object next() {
-            return w.elementAt(place++);
+            if(!enumer.hasMoreElements())
+                throw new NoSuchElementException("no more elements");
+            return enumer.nextElement();
         }
 
         @Override
         public void remove() {
             if(ok) {
                 ok = false;
-                w.removeElementAt(place);
+                w.removeElement(lastElement);
             }
             else
                 throw new IllegalArgumentException("  \"Has next\"  wasn't call");
         }
     }
+
+
 
 }

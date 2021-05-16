@@ -13,7 +13,8 @@ import static org.junit.Assert.*;
  * The method that instantiates the object to be tested is setup(), which will be executed before all tests.<br>
  * In the first part the HCollection methods will be tested, but in the second part the backing to MapAdapter will be verified.<br>
  * Tests of this class are performed by the ESTestRunner class. <br>
- * @see CVTestRunner CVTestRunner.
+ * @see CollectionValuesTestRunner CollectionValuesTestRunner. <br>
+ * @see MapAdapter MapAdapter <br>
  *
  */
 public class CollectionValuesTest{
