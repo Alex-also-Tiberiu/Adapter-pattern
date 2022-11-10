@@ -1,4 +1,4 @@
-## this is a software engineering homework. <br />
+## this is a software engineering exam. <br />
 The homework is intended to learn:
 - what is an adapter pattern
 - how to test a project using Junit 4
