@@ -1,5 +1,5 @@
 ## this is a software engineering exam. <br />
-The homework is intended to learn:
+The exam is intended to learn:
 - what is an adapter pattern
 - how to test a project using Junit 4
 - how to write a documentation <br />
