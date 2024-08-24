@@ -1,5 +1,6 @@
-## this is a software engineering exam. <br />
-The exam is intended to learn:
+## this is a software engineering project. <br />
+# Software engineering Unipd. <br />
+The aim of this project is to learn:
 - what is an adapter pattern
 - how to test a project using Junit 4
 - how to write a documentation <br />
